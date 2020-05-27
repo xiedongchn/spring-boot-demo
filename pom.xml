@@ -37,7 +37,9 @@
 		</dependency>
 	</dependencies>
 
-	<build>
+	<!-- 父pom不要添加此插件，否则会导致需要打成依赖包的子模块报找不到main class的错， -->
+	<!-- 子模块必须添加有main函数的类或者使用@SpringBootApplication注解才行 -->
+	<!--<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -51,6 +53,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-	</build>
+	</build>-->
 
 </project>

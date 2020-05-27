@@ -19,16 +19,16 @@
         </dependency>
     </dependencies>
 
-    <build>
+    <!--<build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <classifier>exec</classifier><!--将此工程打包为可被依赖的包，详见：https://blog.csdn.net/guduyishuai/article/details/60968728 -->
+                    <classifier>exec</classifier>&lt;!&ndash;将此工程打包为可被依赖的包，详见：https://blog.csdn.net/guduyishuai/article/details/60968728 &ndash;&gt;
                 </configuration>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 </project>
