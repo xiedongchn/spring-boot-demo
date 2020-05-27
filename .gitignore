@@ -1,3 +1,6 @@
+*.class
+.DS_Store
+application.pid
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -23,3 +26,11 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Eclipse
+target
