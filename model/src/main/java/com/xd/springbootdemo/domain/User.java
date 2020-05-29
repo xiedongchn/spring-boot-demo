@@ -1,5 +1,7 @@
 package com.xd.springbootdemo.domain;
 
+import com.xd.springbootdemo.validator.CardNumberValidator;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -18,6 +20,8 @@ public class User implements Serializable {
     @NotNull
     private String name;
 
+    @NotNull
+    @CardNumberValidator(message = "卡号必须以001开头接'-'，数字结尾")
     private String cardNo;
 
     private Integer age;

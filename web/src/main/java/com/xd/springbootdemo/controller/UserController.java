@@ -16,15 +16,15 @@ import java.util.*;
 public class UserController {
 
     //创建线程安全的map
-    private static Map<Long, User> userMap = Collections.synchronizedMap(new HashMap<>());
+    private static final Map<Long, User> userMap = Collections.synchronizedMap(new HashMap<>());
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/getUserList")
     public List<User> getUserList() {
         //处理"/user/"的get请求，用来获取用户列表
-        return new ArrayList<User>(userMap.values());
+        return new ArrayList<>(userMap.values());
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String postUser(@ModelAttribute User user) {
         // 处理"/users/"的POST请求，用来创建User
         // 除了@ModelAttribute绑定参数之外，还可以通过@RequestParam从页面中传递参数
