@@ -30,7 +30,7 @@ public @interface CardNumberValidator {
     /**
      * @return value the element must be lower or equal to
      */
-    long value();
+    long value() default 0L;
 
     /**
      * Defines several {@link Max} annotations on the same element.
