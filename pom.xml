@@ -15,7 +15,8 @@
 		<module>model</module>
 		<module>persistence</module>
 		<module>web</module>
-	</modules>
+        <module>common</module>
+    </modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
