@@ -1,4 +1,4 @@
-package com.xd.springbootdemo.security;
+package com.xd.springbootdemo.util;
 
 import javax.crypto.Cipher;
 import java.security.Key;

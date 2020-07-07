@@ -1,9 +1,9 @@
 package com.xd.springbootdemo.test;
 
-import com.xd.springbootdemo.security.AES;
-import com.xd.springbootdemo.security.Base64;
-import com.xd.springbootdemo.security.HttpUtil;
-import com.xd.springbootdemo.security.MD5;
+import com.xd.springbootdemo.util.AES;
+import com.xd.springbootdemo.util.Base64;
+import com.xd.springbootdemo.util.HttpUtil;
+import com.xd.springbootdemo.util.MD5;
 
 import java.net.URLEncoder;
 import java.util.HashMap;

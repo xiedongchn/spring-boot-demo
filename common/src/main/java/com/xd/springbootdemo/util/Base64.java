@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xd.springbootdemo.security;
+package com.xd.springbootdemo.util;
 
 import java.io.IOException;
 import java.io.OutputStream;

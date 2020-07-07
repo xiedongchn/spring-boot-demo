@@ -1,4 +1,4 @@
-package com.xd.springbootdemo.security;
+package com.xd.springbootdemo.util;
 
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;

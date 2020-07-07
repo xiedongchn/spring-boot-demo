@@ -1,7 +1,10 @@
-package com.xd.springbootdemo.security;
+package com.xd.springbootdemo.util;
+
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 
@@ -18,8 +21,8 @@ public class MD5 {
     public static String EncoderByMd5(String buf) {
         try {
             MessageDigest digist = MessageDigest.getInstance("MD5");
-            byte[] rs = digist.digest(buf.getBytes("utf-8"));
-            StringBuffer digestHexStr = new StringBuffer();
+            byte[] rs = digist.digest(buf.getBytes(StandardCharsets.UTF_8));
+            StringBuilder digestHexStr = new StringBuilder();
             for (int i = 0; i < 16; i++) {
                 digestHexStr.append(byteHEX(rs[i]));
             }
@@ -37,8 +40,15 @@ public class MD5 {
      * @return
      */
     public static String encodeByMd5WithSalt(String inbuf,String salt) {
-    	String mac = EncoderByMd5(EncoderByMd5(inbuf+salt));
-        return mac;
+        return EncoderByMd5(EncoderByMd5(inbuf+salt));
+    }
+
+    public static String encodeByMd5AndSalt(String inbuf, String salt) {
+        if (StringUtils.isEmpty(salt)) {
+            return EncoderByMd5(EncoderByMd5(inbuf) + "HXWcjvQWVG1wI4FQBLZpQ3pWj48AV63d");
+        } else {
+            return EncoderByMd5(EncoderByMd5(inbuf) + salt);
+        }
     }
 
     private static String byteHEX(byte ib) {
@@ -46,8 +56,7 @@ public class MD5 {
         char[] ob = new char[2];
         ob[0] = Digit[(ib >>> 4) & 0X0F];
         ob[1] = Digit[ib & 0X0F];
-        String s = new String(ob);
-        return s;
+        return new String(ob);
     }
     public static void main(String[] args) throws Exception{
     	BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Administrator\\Desktop\\1.txt"));

@@ -1,9 +1,9 @@
-package com.xd.springbootdemo.security;
+package com.xd.springbootdemo.util;
 
 import com.alibaba.fastjson.JSONObject;
-import io.netty.util.internal.StringUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
 
 
 public class FactoryUtil {
@@ -31,19 +31,19 @@ public class FactoryUtil {
      * 如果安全检查通过返回解密后的数据，否则抛出异常
      *
      * @param aesKey 密钥
-     * @param salt 盐
-     * @param mac mac值
-     * @param data 数据
+     * @param salt   盐
+     * @param mac    mac值
+     * @param data   数据
      * @return 解密后的数据
      * @throws Exception 异常
      */
     private String securityParse(String aesKey, String salt, String mac, String data) throws Exception {
         log.info("收到的原始加密报文：" + data);
 
-        if (StringUtil.isNullOrEmpty(mac)) {
+        if (StringUtils.isEmpty(mac)) {
             throw new Exception("ERROR_009");
         }
-        if (StringUtil.isNullOrEmpty(data)) {
+        if (StringUtils.isEmpty(data)) {
             throw new Exception("ERROR_033");
         }
 
