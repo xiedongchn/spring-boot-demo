@@ -1,7 +1,6 @@
-package com.xd.springbootdemo.properties;
+package com.xd.springbootdemo.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
  * Created on 2018/7/23 14:50
  */
 @Component
-@PropertySource(value = "classpath:config/redis.properties")
 public class RedisProperties {
 
     @Value("${spring.redis.database}")
@@ -25,22 +23,22 @@ public class RedisProperties {
     @Value("${spring.redis.password}")
     private String password;
 
-    @Value("${spring.redis.pool.max-active}")
+    @Value("${spring.redis.jedis.pool.max-active}")
     private Integer maxActive;
 
-    @Value("${spring.redis.pool.max-wait}")
+    @Value("${spring.redis.jedis.pool.max-wait}")
     private Integer maxWait;
 
-    @Value("${spring.redis.pool.max-idle}")
+    @Value("${spring.redis.jedis.pool.max-idle}")
     private Integer maxIdle;
 
-    @Value("${spring.redis.pool.min-idle}")
+    @Value("${spring.redis.jedis.pool.min-idle}")
     private Integer minIdle;
 
     @Value("${spring.redis.timeout}")
     private Integer timeout;
 
-    @Value("${sspring.redis.url}")
+    @Value("${spring.redis.url}")
     private String url;
 
     /* 经测试，即使没有getter和setter方法，也能对属性进行注入 */

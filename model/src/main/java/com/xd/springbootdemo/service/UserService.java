@@ -7,6 +7,13 @@ package com.xd.springbootdemo.service;
 public interface UserService {
 
     /**
+     * 打招呼
+     *
+     * @param something 想说的话
+     */
+    String sayHello(String something);
+
+    /**
      * 新增一个用户
      *
      * @param name 名称

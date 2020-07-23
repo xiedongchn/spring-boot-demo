@@ -1,18 +1,24 @@
-package com.xd.springbootdemo.service;
+package com.xd.springbootdemo.impl;
 
+//import com.alibaba.dubbo.config.annotation.Service;
+import com.xd.springbootdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 
 /**
  * @author xd
  * Created on 2018/7/24 09:29
  */
-@Service
+//@Service  //该Service注解是dubbo的注解，不是spring的。若使用xml配置方式暴露接口，则不需要该注解。
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public String sayHello(String something) {
+        return "Hello, " + something;
+    }
 
     @Override
     public void create(String name, Integer age) {

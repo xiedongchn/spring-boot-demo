@@ -41,7 +41,6 @@ public @interface CardNumberValidator {
     @Retention(RUNTIME)
     @Documented
     @interface List {
-
         Max[] value();
     }
 }
