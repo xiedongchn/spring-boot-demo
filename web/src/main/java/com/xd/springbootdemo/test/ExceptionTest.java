@@ -1,6 +1,7 @@
 package com.xd.springbootdemo.test;
 
 import com.xd.springbootdemo.exception.ExpectedException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ public class ExceptionTest {
                 throw new ExpectedException("除数不能为0");
             }
             Integer f = i / k;
+            Assert.assertNotNull(f);
         } catch (ExpectedException e) {
             e.getMessage();
             e.printStackTrace();
