@@ -22,7 +22,7 @@ public class User implements Serializable {
 
     @NotNull
     @CardNumberValidator(message = "卡号必须以001开头接'-'，数字结尾")
-    private String cardNo;
+    private String idNo;
 
     private Integer age;
 
@@ -42,12 +42,12 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getCardNo() {
-        return cardNo;
+    public String getIdNo() {
+        return idNo;
     }
 
-    public void setCardNo(String cardNo) {
-        this.cardNo = cardNo;
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 
     public Integer getAge() {

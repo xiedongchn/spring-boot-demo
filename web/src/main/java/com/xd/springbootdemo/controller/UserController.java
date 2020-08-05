@@ -1,9 +1,13 @@
 package com.xd.springbootdemo.controller;
 
 import com.xd.springbootdemo.domain.User;
+import com.xd.springbootdemo.mapper.UserMapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -14,6 +18,14 @@ import java.util.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Resource
+    private UserMapper userMapper;
+
+    @PostMapping("/queryUser")
+    public User queryUser(@Param("id") Integer id) {
+        return userMapper.selectById(id);
+    }
 
     //创建线程安全的map
     private static final Map<Long, User> userMap = Collections.synchronizedMap(new HashMap<>());

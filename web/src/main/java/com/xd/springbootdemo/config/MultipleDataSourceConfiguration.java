@@ -14,7 +14,7 @@ public class MultipleDataSourceConfiguration {
     @Primary
     public DataSource masterDataSource() {
         DataSourceBuilder builder = DataSourceBuilder.create();
-        return builder.driverClassName("com.mysql.jdbc.Driver").
+        return builder.driverClassName("com.mysql.cj.jdbc.Driver").
                 url("jdbc:mysql://127.0.0.1:3306/test").username("root").
                 password("1234567").build();
     }
@@ -22,7 +22,7 @@ public class MultipleDataSourceConfiguration {
     @Bean
     public DataSource slaveDataSource() {
         DataSourceBuilder builder = DataSourceBuilder.create();
-        return builder.driverClassName("com.mysql.jdbc.Driver").
+        return builder.driverClassName("com.mysql.cj.jdbc.Driver").
                 url("jdbc:mysql://127.0.0.1:3306/test2").username("root").
                 password("1234567").build();
     }
