@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * Created on 2018/7/23 14:50
  */
 @Component
-@PropertySource(value = "classpath:config/redis.properties")
+@PropertySource(value = "classpath:dev/redis.properties")
 public class RedisProperties {
 
     @Value("${spring.redis.database}")

@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.PostConstruct;
+
 @SpringBootApplication
 public class SpringBootDemoApplication implements WebMvcConfigurer {
 
@@ -16,5 +18,10 @@ public class SpringBootDemoApplication implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new UserControllerInterceptor());
+	}
+
+	@PostConstruct
+	public void check() {
+		System.out.println("check start");
 	}
 }
