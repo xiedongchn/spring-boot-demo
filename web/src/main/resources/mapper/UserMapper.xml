@@ -38,4 +38,7 @@
     <select id="selectById" parameterType="java.lang.Integer" resultType="com.xd.springbootdemo.domain.User">
         select <include refid="baseColumns"/> from user where id=#{id,jdbcType=BIGINT}
     </select>
+    <select id="selectAllUser" resultType="com.xd.springbootdemo.domain.User">
+        select <include refid="baseColumns"/> from user
+    </select>
 </mapper>

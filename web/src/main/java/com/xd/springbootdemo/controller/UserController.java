@@ -27,6 +27,11 @@ public class UserController {
         return userMapper.selectById(id);
     }
 
+    @PostMapping("/queryUserList")
+    public List<User> queryUserList(@Param("id") Integer id) {
+        return userMapper.selectAllUser();
+    }
+
     //创建线程安全的map
     private static final Map<Long, User> userMap = Collections.synchronizedMap(new HashMap<>());
 
