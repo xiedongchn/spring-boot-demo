@@ -3,7 +3,6 @@ package com.xd.springbootdemo.controller;
 import com.xd.springbootdemo.domain.User;
 import com.xd.springbootdemo.mapper.UserMapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 

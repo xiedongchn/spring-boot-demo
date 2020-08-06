@@ -1,5 +1,7 @@
 package com.xd.springbootdemo.test;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidPooledConnection;
 import org.junit.Test;
 
 import java.sql.*;
@@ -130,5 +132,29 @@ public class JDBCTest {
         int[] result = Arrays.copyOf(first, first.length + second.length);
         System.arraycopy(second, 0, result, first.length, second.length);
         return result;
+    }
+
+    public void insertUser() {
+        try {
+            DruidDataSource dataSource = getDataSource();
+            DruidPooledConnection connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
+            PreparedStatement statement = connection.prepareStatement("insert into test.user(name, idNo, age) values ('李四', '2131238477', 3)");
+            statement.execute();
+            connection.commit();
+            statement.close();
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public DruidDataSource getDataSource() throws SQLException {
+        DruidDataSource ds = new DruidDataSource();
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        ds.setUsername("root");
+        ds.setPassword("87654321");
+        ds.setUrl("jdbc:mysql://127.0.0.1:3306/test?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true");
+        return ds;
     }
 }
