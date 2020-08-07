@@ -149,7 +149,7 @@ public class JDBCTest {
         }
     }
 
-    public DruidDataSource getDataSource() throws SQLException {
+    public DruidDataSource getDataSource() {
         DruidDataSource ds = new DruidDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUsername("root");

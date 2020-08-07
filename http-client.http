@@ -1,0 +1,6 @@
+POST http://{{url}}/user/queryUserList
+Content-Type: application/json
+
+{}
+
+###
