@@ -16,12 +16,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SpringBootTest
 public class ThreadTest {
 
-    @Test
-    public void executorServiceTest() throws InterruptedException {
+    public void executorServiceTest3(int size) throws InterruptedException {
         int threadNum = 4;
-        List<String> data = getList(2000000);
+        List<String> data = getList(size);
         //要处理的数据小于线程数量时，默认使用一个线程，且页大小就是数据集合的大小；要处理的数据大于线程数量时，页大小等于数据数量除以线程数并向上取整
-        int perSize = data.size() < threadNum ? data.size() : (int) Math.ceil(Double.parseDouble(data.size() + "") / Double.parseDouble(threadNum + ""));
+        int perSize = data.size() < threadNum ? data.size() : (int) Math.floor(Double.parseDouble(data.size() + "") / Double.parseDouble(threadNum + ""));
         //要处理的数据小于线程数量时，默认使用一个线程
         threadNum = data.size() < threadNum ? 1 : threadNum;
         ExecutorService executorService = new ThreadPoolExecutor(threadNum, threadNum, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(threadNum));
@@ -30,43 +29,125 @@ public class ThreadTest {
         final CountDownLatch countDownLatch = new CountDownLatch(threadNum);
         for (int i = 0; i < threadNum; i++) {
             int end = (i + 1) * perSize;
-            if (end > data.size()) {//计算出来的下标值超出了列表大小
+            //最后一次循环了数据还没处理完，则把剩下的数据全部丢到最后一次循环中处理
+            if (i + 1 == threadNum && end < data.size()) {
                 end = data.size();
-                threadNum = i;//重置循环条件，使下一次循环不再执行
             }
 
             final int k = i;
-            final List<String> subList = data.subList(i * perSize, end);
-            Future<List<String>> future = executorService.submit(new Callable<List<String>>() {
-                @Override
-                public List<String> call() throws Exception {
-                    List<String> result = new ArrayList<>();
-                    try {
-                        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-                        System.out.println("当前线程" + k + "处理的数据量为:" + subList.size() + ",startTime:" + format.format(System.currentTimeMillis()));
-                        Thread.sleep(10000L);
-                        for (String s : subList) {
-                            result.add(s + "k");
-                        }
-                        System.out.println("当前线程" + k + "处理的数据量为:" + subList.size() + ",endTime:" + format.format(System.currentTimeMillis()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        countDownLatch.countDown();
+            final int start = i * perSize;
+            final int end1 = end;
+            final List<String> subList = data.subList(start, end);
+            Future<List<String>> future = executorService.submit(() -> {
+                List<String> result = new ArrayList<>();
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                    System.out.println("当前线程" + k + "处理的数据量为:" + subList.size() + ",startTime:" + format.format(System.currentTimeMillis()) + ",s-e:" + (start+1) + "-" + end1);
+                    for (String s : subList) {
+                        result.add(s + "k");
                     }
-                    return result;
+                    System.out.println("当前线程" + k + "处理的数据量为:" + subList.size() + ",endTime:" + format.format(System.currentTimeMillis()) + ",s-e:" + (start+1) + "-" + end1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    countDownLatch.countDown();
                 }
+                return result;
             });
-            /*try {
+            /* 调用addAll会导致线程变成同步执行的
+            try {
                 if (future.get() != null && !future.get().isEmpty()) {
                     resultList.addAll(future.get());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }*/
+            // 把future添加到集合中，对结果的处理放在for循环之外，可避免线程同步执行问题
+            futureList.add(future);
         }
         countDownLatch.await();
         executorService.shutdown();
+        for (Future<List<String>> future : futureList) {
+            try {
+                resultList.addAll(future.get());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void executorServiceTest(int size) throws InterruptedException {
+        int threadNum = 4;
+        List<String> data = getList(size);
+        //要处理的数据小于线程数量时，默认使用一个线程，且页大小就是数据集合的大小；要处理的数据大于线程数量时，页大小等于数据数量除以线程数并向上取整
+        int perSize = data.size() < threadNum ? data.size() : (int) Math.ceil(Double.parseDouble(data.size() + "") / Double.parseDouble(threadNum + ""));
+        //要处理的数据小于线程数量时，默认使用一个线程
+        threadNum = data.size() < threadNum ? 1 : (int) Math.ceil(Double.parseDouble(data.size() + "") / Double.parseDouble(perSize + ""));
+        ExecutorService executorService = new ThreadPoolExecutor(threadNum, threadNum, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(threadNum));
+        final List<String> resultList = Collections.synchronizedList(new ArrayList<>());
+        final List<Future<List<String>>> futureList = Collections.synchronizedList(new ArrayList<>());
+        final CountDownLatch countDownLatch = new CountDownLatch(threadNum);
+        System.out.println("tn:" + threadNum);
+        for (int i = 0; i < threadNum; i++) {
+            int end = (i + 1) * perSize;
+            if (end > data.size()) {//计算出来的下标值超出了列表大小
+                end = data.size();
+                //threadNum = i;//重置循环条件，使下一次循环不再执行
+            }
+
+            final int k = i;
+            final int start = i * perSize;
+            final int end1 = end;
+            final List<String> subList = data.subList(start, end);
+            Future<List<String>> future = executorService.submit(() -> {
+                List<String> result = new ArrayList<>();
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                    System.out.println("当前线程" + k + "处理的数据量为:" + subList.size() + ",startTime:" + format.format(System.currentTimeMillis()) + ",s-e:" + (start+1) + "-" + end1);
+                    for (String s : subList) {
+                        result.add(s + "k");
+                    }
+                    System.out.println("当前线程" + k + "处理的数据量为:" + subList.size() + ",endTime:" + format.format(System.currentTimeMillis()) + ",s-e:" + (start+1) + "-" + end1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    countDownLatch.countDown();
+                }
+                return result;
+            });
+            /* 调用addAll会导致线程变成同步执行的
+            try {
+                if (future.get() != null && !future.get().isEmpty()) {
+                    resultList.addAll(future.get());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
+            // 把future添加到集合中，对结果的处理放在for循环之外，可避免线程同步执行问题
+            futureList.add(future);
+        }
+        countDownLatch.await();
+        executorService.shutdown();
+        for (Future<List<String>> future : futureList) {
+            try {
+                resultList.addAll(future.get());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Test
+    public void tt() {
+        try {
+            for(int i = 1; i <= 100; i++) {
+                System.out.println("---------start:" + i + "------------");
+                executorServiceTest3(i);
+                System.out.println("-----------end:" + i + "------------");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
