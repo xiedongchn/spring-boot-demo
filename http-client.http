@@ -4,3 +4,6 @@ Content-Type: application/json
 {}
 
 ###
+
+#手动触发核算批扣任务
+http://{{host}}:8180/ycloans/LoanAutoPayTask?taskType=task1

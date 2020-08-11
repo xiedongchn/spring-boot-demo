@@ -14,6 +14,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * 和HTTP有关的一些工具方法
@@ -117,7 +118,6 @@ public final class HttpUtil {
     }
 
     public static String send(String url, String type, String data, int timeout) {
-
         if (StringUtils.isEmpty(url)) {
             return "";
         }
@@ -363,7 +363,45 @@ public final class HttpUtil {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    /**
+     * 调用核算接口的通用方法。
+     *
+     * @param reqMessage 请求报文
+     * @return String
+     */
+    public static String callHsMethod(String reqMessage) {
+        String repMessage = "";
+        String hsUrl = "http://127.0.0.1:8180/ycloans/Cmis2YcloansHttpChannel";
+        try {
+            URL url = new URL(hsUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setConnectTimeout(10000);
+            httpURLConnection.setRequestProperty("content-type", "text/xml; charset=gbk");
+            httpURLConnection.getOutputStream().write(reqMessage.getBytes("GBK"));
+            httpURLConnection.getOutputStream().flush();
+            httpURLConnection.getOutputStream().close();
+            httpURLConnection.connect();
+
+            InputStream in = httpURLConnection.getInputStream();
+            StringBuilder sb = new StringBuilder();
+            byte[] buffer = new byte[2048];
+            int length;
+            while ((length = in.read(buffer, 0, buffer.length)) != -1) {
+                sb.append(new String(buffer, 0, length, "GB2312"));
+            }
+            in.close();
+
+            repMessage = sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return repMessage;
+    }
+
+    public static void main(String[] args) {
         String url = "http://stage-payment-center.vipkid-qa.com.cn/api/paymentcenter/cmbc/instalment/payment/callback";
         String resp = send(url, "POST", "{}", 1000);
         System.out.println(resp);
