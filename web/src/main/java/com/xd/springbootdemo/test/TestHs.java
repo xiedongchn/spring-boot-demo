@@ -17,12 +17,14 @@ public class TestHs {
     public void test10000000022LoanDown() {
         // 第一步：将requestMessage转换为xml的字符串
         List<String> msgList = batchGenData(1);
+        int i = 1;
         for (String reqMessage : msgList) {
             // 第二步：将根据请求报文，调用核算接口
-            System.out.println("HsLoanDownTest[请求报文]" + reqMessage);
+            System.out.println("第"+ i + "次HsLoanDownTest[请求报文]" + reqMessage);
             String rspMessage = HttpUtil.callHsMethod(reqMessage);
             // 响应报文字符串
-            System.out.println("HsLoanDownTest[响应报文]" + rspMessage);
+            System.out.println("第"+ i + "次HsLoanDownTest[响应报文]" + rspMessage);
+            i++;
         }
     }
 
@@ -33,7 +35,7 @@ public class TestHs {
      * @return 报文集合
      */
     public static List<String> batchGenData(int size) {
-        long start = 202406010742142002L;//根据时间戳随便设定一个起始值，后续依次加1
+        long start = 202407150742143205L;//根据时间戳随便设定一个起始值，后续依次加1
         String GEN_GL_NO = start + "";//需修改：放款授权号，每次发起新请求，需要修改成一个新的号码;
         String appl_seq = GEN_GL_NO;//需修改：申请借据表的seq，需要修改成一个新的号码 ;
         String appl_cde = "QD" + GEN_GL_NO;//需修改：申请借据表的申请编号，需要修改成一个新的号码;
