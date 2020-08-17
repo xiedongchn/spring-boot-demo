@@ -1,5 +1,6 @@
 package com.xd.springbootdemo.test;
 
+import com.xd.springbootdemo.util.DateUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -37,5 +38,30 @@ public class OtherTest {
     public void test2() {
         System.out.println("ea8180c2-a64d-4645-99b8-0210c71f980c_1".substring(0, "ea8180c2-a64d-4645-99b8-0210c71f980c_1".length()-1));
         System.out.println(new StringTokenizer("ea8180c2-a64d-4645-99b8-0210c71f980c_1", "_"));
+    }
+
+    @Test
+    public void testDate() {
+        String date = DateUtil.getCurrentDate();
+        long minTime = DateUtil.stringToDate(date + " 11:40:00", "yyyy-MM-dd HH:mm:ss").getTime();
+        long maxTime = DateUtil.stringToDate(date + " 11:45:00", "yyyy-MM-dd HH:mm:ss").getTime();
+        long curTime = System.currentTimeMillis();
+        System.out.println(date);
+        System.out.println(minTime);
+        System.out.println(maxTime);
+        System.out.println(curTime);
+
+        if (!(minTime <= curTime && curTime <= maxTime)) {
+            System.out.println("false");
+        } else {
+            System.out.println("true");
+            return;
+        }
+
+        try {
+            System.out.println("try");
+        } finally {
+            System.out.println("finally");
+        }
     }
 }
