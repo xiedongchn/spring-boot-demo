@@ -15,7 +15,7 @@ import java.util.concurrent.*;
  * Created on 2020/8/19
  */
 public class TestThreadLocal {
-    ThreadLocal<StringBuilder> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<StringBuilder> threadLocal = new ThreadLocal<>();
 
     @Test
     public void testThreadLocal() throws InterruptedException {
@@ -45,7 +45,7 @@ public class TestThreadLocal {
                     threadLocal.set(new StringBuilder());
                     map.put(Thread.currentThread().getName(), threadLocal.get());
                 }
-                System.out.println("执行线程:" + Thread.currentThread().getName() + "获取的sdf:" + threadLocal.get().hashCode());
+                System.out.println("执行线程:" + Thread.currentThread().getName() + "获取的sdf:" + System.identityHashCode(threadLocal.get().hashCode()));
                 latch.countDown();
             });
         }
