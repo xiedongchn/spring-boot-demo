@@ -64,4 +64,44 @@ public class OtherTest {
             System.out.println("finally");
         }
     }
+
+    @Test
+    public void testToString() {
+        List<tt> list = new ArrayList<>();
+        tt t1 = new tt();
+        t1.setI(1);
+        t1.setJ("j1");
+        list.add(t1);
+        t1 = new tt();
+        t1.setI(2);
+        t1.setJ("j2");
+        list.add(t1);
+        System.out.println(list.toString());
+    }
+
+    private class tt {
+        private int i;
+        private String j;
+
+        public int getI() {
+            return i;
+        }
+
+        public void setI(int i) {
+            this.i = i;
+        }
+
+        public String getJ() {
+            return j;
+        }
+
+        public void setJ(String j) {
+            this.j = j;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("tt{i=%d, j='%s'}", i, j);
+        }
+    }
 }

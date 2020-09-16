@@ -16,7 +16,7 @@ public class TestHs {
     @Test
     public void test10000000022LoanDown() {
         // 第一步：将requestMessage转换为xml的字符串
-        List<String> msgList = batchGenData(1);
+        List<String> msgList = batchGenData(5);
         int i = 1;
         for (String reqMessage : msgList) {
             // 第二步：将根据请求报文，调用核算接口
@@ -35,16 +35,16 @@ public class TestHs {
      * @return 报文集合
      */
     public static List<String> batchGenData(int size) {
-        long start = 202407150742143205L;//根据时间戳随便设定一个起始值，后续依次加1
+        long start = 202408149953519208L;//根据时间戳随便设定一个起始值，后续依次加1
         String GEN_GL_NO = start + "";//需修改：放款授权号，每次发起新请求，需要修改成一个新的号码;
         String appl_seq = GEN_GL_NO;//需修改：申请借据表的seq，需要修改成一个新的号码 ;
         String appl_cde = "QD" + GEN_GL_NO;//需修改：申请借据表的申请编号，需要修改成一个新的号码;
-        String releaseDate = "2024-06-01"; // 需修改：放款日期；需要改成和本地glloans.s_ctrl当期要一致;
+        String releaseDate = "2024-08-14"; // 需修改：放款日期；需要改成和本地glloans.s_ctrl当期要一致;
         String DUE_DAY = releaseDate.substring(8);// 取放款日期对应的后两位（日）
         String TNR = "3";//可修改：借据期数
         String endDate = "";//TNR有值时，可以传空
-        String id_no = "410725199605310011";//可修改：身份证号
-        String cust_name = "张九";//可修改：借款人名
+        String id_no = "410102198803071971";//可修改：身份证号
+        String cust_name = "王十";//可修改：借款人名
         String loan_typ = "YGD_005";//可修改：贷款品种号
         String PAYM_FREQ_UNIT = "M";//间隔单位按月
         String PAYM_FREQ_FREQ = "1";//间隔
