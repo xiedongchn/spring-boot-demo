@@ -4,6 +4,8 @@ import com.xd.springbootdemo.util.DateUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class OtherTest {
@@ -38,6 +40,14 @@ public class OtherTest {
     public void test2() {
         System.out.println("ea8180c2-a64d-4645-99b8-0210c71f980c_1".substring(0, "ea8180c2-a64d-4645-99b8-0210c71f980c_1".length()-1));
         System.out.println(new StringTokenizer("ea8180c2-a64d-4645-99b8-0210c71f980c_1", "_"));
+    }
+
+    @Test
+    public void test3() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = format.parse("2020-09-23");
+        Date date2 = format.parse("2020-09-24");
+        System.out.println(date1.before(date2));
     }
 
     @Test
