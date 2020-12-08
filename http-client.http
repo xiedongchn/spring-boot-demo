@@ -7,8 +7,26 @@ Content-Type: application/json
 ### 手动触发核算批扣任务
 GET http://{{host}}:8180/ycloans/LoanAutoPayTask?taskType=task1
 
-### 手动触发核算批扣任务
+### 手动触发核算批扣查询任务
+GET http://{{host}}:8180/ycloans/LoanAutoPayTask?taskType=task2
+
+### 手动触发核算批扣查询任务
+GET http://{{host}}:8180/ycloans/LoanAutoPayTask?taskType=task3
+
+### 手动触发桂林核算批扣任务
 GET http://{{host}}:8180/ycloans/LoanAutoPayTask?taskType=glTask1
+
+### 手动触发九江核算批扣任务
+GET http://172.30.60.129:18010/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.LoanAutoPayJjTask1OP
+
+### 非生产环境手动触发定时任务
+GET http://{{host}}:8180/ycloans/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.XwLoanCollectionTimeTaskOP
+
+### 生产环境手动触发定时任务
+# curl -v http://127.0.0.1:28078/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.XwLoanCollectionTimeTaskOP
+
+### 检查日终
+GET http://127.0.0.1/WarmMonitorServlet.action?scene=DAYBAT_FAIL
 
 ### 明文通知
 POST http://111.198.131.243:9821/gateway/xwRepayNotify?corpCode=corp_xwzd

@@ -2,8 +2,10 @@ package com.xd.springbootdemo.test;
 
 import com.xd.springbootdemo.util.DateUtil;
 import org.junit.Test;
+import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -77,21 +79,100 @@ public class OtherTest {
 
     @Test
     public void testToString() {
-        List<tt> list = new ArrayList<>();
-        tt t1 = new tt();
+        List<T> list = new ArrayList<>();
+        T t1 = new T();
         t1.setI(1);
         t1.setJ("j1");
         list.add(t1);
-        t1 = new tt();
+        t1 = new T();
         t1.setI(2);
         t1.setJ("j2");
         list.add(t1);
         System.out.println(list.toString());
     }
 
-    private class tt {
+    @Test
+    public void testCompareDateStr() {
+        System.out.println(DateUtil.compareStrDate("2020-10-03", "2020-10-02"));
+    }
+
+    @Test
+    public void testSpringBeanUtils() {
+        List<T> list = new ArrayList<>();
+        T t1 = new T(1, "j1", new T.InnerT(2, "j2"));
+        list.add(t1);
+
+        List<T> list1 = new ArrayList<>();
+        for (T t : list) {
+            T newT = new T();
+            BeanUtils.copyProperties(t, newT);
+            list1.add(newT);
+        }
+
+        List<T> list2 = new ArrayList<>();
+        for (T t : list) {
+            T newT = new T(3, "j3", new T.InnerT(4, "j4"));
+            BeanUtils.copyProperties(t, newT);
+            list2.add(newT);
+        }
+
+        System.out.println(list.toString());
+        System.out.println(list1.toString());
+        System.out.println(list2.toString());
+
+        list1.get(0).setI(5);
+        list1.get(0).setJ("j6");
+        list1.get(0).setInnerT(null);
+
+        list2.get(0).setI(7);
+        list2.get(0).setJ("j8");
+        list2.get(0).setInnerT(new T.InnerT(9, "j10"));
+
+        System.out.println(list.toString());
+        System.out.println(list1.toString());
+        System.out.println(list2.toString());
+        System.out.println(StandardCharsets.UTF_8.name());
+    }
+
+    private static class T {
         private int i;
         private String j;
+        private InnerT innerT;
+
+        public T() {
+        }
+
+        public T(int i, String j, InnerT innerT) {
+            this.i = i;
+            this.j = j;
+            this.innerT = innerT;
+        }
+
+        public static class InnerT {
+            private int i;
+            private String j;
+
+            public InnerT(int i, String j) {
+                this.i = i;
+                this.j = j;
+            }
+
+            public int getI() {
+                return i;
+            }
+
+            public void setI(int i) {
+                this.i = i;
+            }
+
+            public String getJ() {
+                return j;
+            }
+
+            public void setJ(String j) {
+                this.j = j;
+            }
+        }
 
         public int getI() {
             return i;
@@ -109,9 +190,17 @@ public class OtherTest {
             this.j = j;
         }
 
+        public InnerT getInnerT() {
+            return innerT;
+        }
+
+        public void setInnerT(InnerT innerT) {
+            this.innerT = innerT;
+        }
+
         @Override
         public String toString() {
-            return String.format("tt{i=%d, j='%s'}", i, j);
+            return String.format("T{i=%d, j='%s', innerT=%s}", i, j, innerT);
         }
     }
 }
