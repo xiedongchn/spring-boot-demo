@@ -15,6 +15,10 @@ public class Algorithm {
         int target = 9;
         System.out.println(Arrays.toString(twoSum1(nums, target)));
         System.out.println(Arrays.toString(twoSum2(nums, target)));
+        System.out.println(reverse1(2147483641));
+        System.out.println(reverse1(-2147483641));
+        System.out.println(reverse2(2147483641));
+        System.out.println(reverse2(-2147483641));
     }
 
     public static int[] twoSum1(int[] nums, int target) {
@@ -48,5 +52,52 @@ public class Algorithm {
         return null;
     }
 
+    public static int reverse1(int x) {
+        // 解法一：直接将数字转成字符串，然后将字符串反转，不过要注意反转后的数字整型溢出问题，故用长整型接收转换后的字符串
+        char[] c = String.valueOf(x).toCharArray();
+        StringBuilder c1 = new StringBuilder();
+        for (int i = c.length - 1; i >= 0; i--) {
+            if ('-' == c[i]) {// 如果是负数，反转后减号必然在最后一位，把减号插入到字符串最前面，然后跳出循环
+                c1.insert(0, '-');
+                break;
+            }
+            c1.append(c[i]);
+        }
+        long x1 = Long.parseLong(c1.toString());
+        return (int) (x1 > Integer.MAX_VALUE || x1 < Integer.MIN_VALUE ? 0 : x1);
+    }
+
+    public static int reverse2(int x) {
+        // 解法二：数学法，具体做法是将原整数每次按10取模，即可得到最后的一位数，同时将原数除以10，然后将最后一位数乘以10，加上下一位数，
+        // 以此类推，可把数该整数完全翻转过来，并且顺便解决了原数末尾是0的问题，但是要注意，循环处理到最后一位数时，乘以10之前要判断是否大于
+        // Integer.MAX_VALUE / 10或者小于Integer.MIN_VALUE / 10，如果满足这两个条件，那么不用处理最后一位数，因为乘以10之后就溢出了。
+        // 如果恰好等于Integer.MAX_VALUE / 10或者等于Integer.MIN_VALUE / 10，那么对于满足前者时，要判断最后一位数是否大于7，如果大于
+        // 7，那么乘以10再加上最后一位数，必然大于Integer.MAX_VALUE，当满足后者时，要判断最后一位数是否小于-8，如果小于-8，那么乘以10再
+        // 加上最后一位数，必然小于Integer.MIN_VALUE
+        // 注意：负数按10取模得到的也是负数
+        // 举例如下：
+        // -12345 % 10 = -5，-12345 / 10 = -1234，0 * 10 + (-5) = -5
+        // -1234 % 10 = -4，-1234 / 10 = -123，-5 * 10 + (-4) = -54
+        // -123 % 10 = -3，-123 / 10 = -12，-54 * 10 + (-3) = -543
+        // -12 % 10 = -2，-12 / 10 = -1，-543 * 10 + (-2) = -5432
+        // -1 % 10 = -1，-1 / 10 = 0，-5432 * 10 + (-1) = -54321
+        // 时间复杂度：时间复杂度随着x位数的增加而增加，故O(log(x))或O(log10(x))
+        // 空间复杂度：O(1)
+        int res = 0;
+        int max = Integer.MAX_VALUE / 10;
+        int min = Integer.MIN_VALUE / 10;
+        while (x != 0) {
+            int last = x % 10;
+            x /= 10;
+            if (res > max || res == max && last > 7) {
+                return 0;
+            }
+            if (res < min || res == min && last < -8) {
+                return 0;
+            }
+            res = res * 10 + last;
+        }
+        return res;
+    }
 
 }
