@@ -1,8 +1,8 @@
 package com.xd.springbootdemo.test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import org.junit.Test;
+
+import java.util.*;
 
 /**
  * @author xd
@@ -10,15 +10,12 @@ import java.util.Map;
  */
 public class Algorithm {
 
-    public static void main(String[] args) {
+    @Test
+    public void testTwoSum() {
         int[] nums = new int[]{2, 7, 11, 15};
         int target = 9;
         System.out.println(Arrays.toString(twoSum1(nums, target)));
         System.out.println(Arrays.toString(twoSum2(nums, target)));
-        System.out.println(reverse1(2147483641));
-        System.out.println(reverse1(-2147483641));
-        System.out.println(reverse2(2147483641));
-        System.out.println(reverse2(-2147483641));
     }
 
     public static int[] twoSum1(int[] nums, int target) {
@@ -50,6 +47,14 @@ public class Algorithm {
             map.put(nums[i], i);
         }
         return null;
+    }
+
+    @Test
+    public void testReverse() {
+        System.out.println(reverse1(2147483641));
+        System.out.println(reverse1(-2147483641));
+        System.out.println(reverse2(2147483641));
+        System.out.println(reverse2(-2147483641));
     }
 
     public static int reverse1(int x) {
@@ -97,6 +102,73 @@ public class Algorithm {
             }
             res = res * 10 + last;
         }
+        return res;
+    }
+
+    @Test
+    public void testIsPalindrome() {
+        System.out.println(isPalindrome1(2147483641));
+        System.out.println(isPalindrome2(1239321));
+        System.out.println(isPalindrome1(-2147483641));
+    }
+
+    public static boolean isPalindrome1(int x) {
+        // 解法一：判断回文数，首先小于0的直接返回false，等于0返回true，大于0但是末位是0的也返回false；
+        // 其余大于0的数，反转一下，判断是否等于原数，等于则是回文数，否则反之
+        return x >= 0 && (x == 0 || (x % 10 != 0 && x == reverse2(x)));
+    }
+
+    public static boolean isPalindrome2(int x) {
+        // 解法二：大体思路于解法一是一致的，只是循环的时候循环次数少了一半，因为x > y这个条件会造成数字反转到一半的时候跳出循环，如下：
+        // 1234321
+        // 123432:1
+        // 12343:12
+        // 1234:123
+        // 123:1234，在这里就跳出循环了
+        if (x == 0) return true;
+        if (x < 0 || x % 10 == 0) return false;
+        int y = 0;
+        while (x > y) {
+            y = y * 10 + x % 10;
+            x /= 10;
+        }
+        // 在x的位数是双数时，总是x == y，为单数时，总是x == y / 10
+        return x == y || x == y / 10;
+    }
+
+    @Test
+    public void testLongestCommonPrefix1() {
+        System.out.println(longestCommonPrefix(new String[]{"d", "r", "c"}));
+        System.out.println(longestCommonPrefix(new String[]{"flower","flow","flight"}));
+        System.out.println(longestCommonPrefix(new String[]{"dog","racecar","car"}));
+        System.out.println(longestCommonPrefix(new String[]{"ab","a"}));
+    }
+
+    public static String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+
+        String res = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            if (res == null || res.length() == 0 || strs[i] == null || strs[i].length() == 0) {
+                return "";
+            }
+            int minLength = Math.min(res.length(), strs[i].length());
+            for (int j = 0; j < minLength; j++) {
+                if (res.charAt(j) != strs[i].charAt(j)) {// 遇到不等的字符时，直接截断
+                    if (j == 0) {// 第一个字符就不相等直接返回
+                        return "";
+                    }
+                    res = res.substring(0, j);
+                    break;
+                } else if (j == minLength - 1 && res.charAt(j) == strs[i].charAt(j)) {// 相等的字符，没有到最后一个字符都不需要处理，当是最后一个字符时，进行阶段
+                    res = res.substring(0, j + 1);
+                    break;
+                }
+            }
+        }
+
         return res;
     }
 

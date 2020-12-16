@@ -20,10 +20,10 @@ public class TestHs {
         int i = 1;
         for (String reqMessage : msgList) {
             // 第二步：将根据请求报文，调用核算接口
-            System.out.println("第"+ i + "次HsLoanDownTest[请求报文]" + reqMessage);
+            System.out.println("第" + i + "次HsLoanDownTest[请求报文]" + reqMessage);
             String rspMessage = HttpUtil.callHsMethod(reqMessage);
             // 响应报文字符串
-            System.out.println("第"+ i + "次HsLoanDownTest[响应报文]" + rspMessage);
+            System.out.println("第" + i + "次HsLoanDownTest[响应报文]" + rspMessage);
             i++;
         }
     }
@@ -63,7 +63,7 @@ public class TestHs {
         String LOAN_PAYM_TYP = "01";
         String LOAN_PAYM_MTD = "SYS002"; //还款方式，对应P_LOAN_MTD. MTD_CDE，该方式代码必须在还款方式配置表p_loan_mtd中已经配置，后台程序通过查询方式表构造每个借据的还款方式
 
-        List<String> dataList = new ArrayList<String>();
+        List<String> dataList = new ArrayList<>();
         if (size > 1) {
             for (int i = 0; i < size; i++) {
                 GEN_GL_NO = start + "";
