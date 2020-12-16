@@ -139,19 +139,19 @@ public class Algorithm {
     @Test
     public void testLongestCommonPrefix1() {
         System.out.println(longestCommonPrefix(new String[]{"d", "r", "c"}));
-        System.out.println(longestCommonPrefix(new String[]{"flower","flow","flight"}));
-        System.out.println(longestCommonPrefix(new String[]{"dog","racecar","car"}));
-        System.out.println(longestCommonPrefix(new String[]{"ab","a"}));
+        System.out.println(longestCommonPrefix(new String[]{"flower", "flow", "flight"}));
+        System.out.println(longestCommonPrefix(new String[]{"dog", "racecar", "car"}));
+        System.out.println(longestCommonPrefix(new String[]{"ab", "a"}));
     }
 
     public static String longestCommonPrefix(String[] strs) {
-        if (strs == null || strs.length == 0) {
+        if (strs == null || strs.length == 0 || strs[0] == null || strs[0].length() == 0) {
             return "";
         }
 
         String res = strs[0];
         for (int i = 1; i < strs.length; i++) {
-            if (res == null || res.length() == 0 || strs[i] == null || strs[i].length() == 0) {
+            if (strs[i] == null || strs[i].length() == 0) {
                 return "";
             }
             int minLength = Math.min(res.length(), strs[i].length());
@@ -168,7 +168,6 @@ public class Algorithm {
                 }
             }
         }
-
         return res;
     }
 
