@@ -97,6 +97,12 @@ public class OtherTest {
     }
 
     @Test
+    public void testSubString() {
+        String str = "HT123456001";
+        System.out.println(str.substring(2, str.length() - 3));
+    }
+
+    @Test
     public void testSpringBeanUtils() {
         List<T> list = new ArrayList<>();
         T t1 = new T(1, "j1", new T.InnerT(2, "j2"));
