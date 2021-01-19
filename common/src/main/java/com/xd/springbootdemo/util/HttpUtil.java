@@ -370,8 +370,13 @@ public final class HttpUtil {
      * @return String
      */
     public static String callHsMethod(String reqMessage) {
-        String repMessage = "";
         String hsUrl = "http://127.0.0.1:8180/ycloans/Cmis2YcloansHttpChannel";
+        return callHsMethod(hsUrl, reqMessage);
+    }
+
+
+    public static String callHsMethod(String hsUrl, String reqMessage) {
+        String repMessage = "";
         try {
             URL url = new URL(hsUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();

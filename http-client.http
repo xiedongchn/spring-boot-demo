@@ -19,14 +19,20 @@ GET http://{{host}}:8180/ycloans/LoanAutoPayTask?taskType=glTask1
 ### 手动触发九江核算批扣任务
 GET http://172.30.60.129:18010/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.LoanAutoPayJjTask1OP
 
-### 非生产环境手动触发定时任务
-GET http://{{host}}:8180/ycloans/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.XwLoanCollectionTimeTaskOP
+### 测试环境手动触发定时任务
+GET http://{{host}}}:8280/ycloans/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.LoanAutoPayJjTask2OP
 
 ### 生产环境手动触发定时任务
 # curl -v http://127.0.0.1:28078/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.XwLoanCollectionTimeTaskOP
 
 ### 检查日终
 GET http://127.0.0.1/WarmMonitorServlet.action?scene=DAYBAT_FAIL
+
+### 测试环境检测cmis数据库连接
+GET http://{{host}}}:8180/cmis/monitorData?mtype=druid,c3p0
+
+### 测试环境检测ycloans数据库连接
+GET http://{{host}}}:8280/ycloans/monitorData?mtype=druid,c3p0
 
 ### 明文通知
 POST http://111.198.131.243:9821/gateway/xwRepayNotify?corpCode=corp_xwzd

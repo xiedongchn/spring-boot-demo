@@ -16,12 +16,13 @@ public class TestHs {
     @Test
     public void test10000000022LoanDown() {
         // 第一步：将requestMessage转换为xml的字符串
-        List<String> msgList = batchGenData(10);
+        List<String> msgList = batchGenData(1000);
         int i = 1;
+        String hsUrl = "http://172.30.2.41:8280/ycloans/Cmis2YcloansHttpChannel";
         for (String reqMessage : msgList) {
             // 第二步：将根据请求报文，调用核算接口
             System.out.println("第" + i + "次HsLoanDownTest[请求报文]" + reqMessage);
-            String rspMessage = HttpUtil.callHsMethod(reqMessage);
+            String rspMessage = HttpUtil.callHsMethod(hsUrl, reqMessage);
             // 响应报文字符串
             System.out.println("第" + i + "次HsLoanDownTest[响应报文]" + rspMessage);
             i++;
@@ -35,16 +36,16 @@ public class TestHs {
      * @return 报文集合
      */
     public static List<String> batchGenData(int size) {
-        long start = 212418150052419208L;//根据时间戳随便设定一个起始值，后续依次加1
+        long start = 212419150052429308L;//根据时间戳随便设定一个起始值，后续依次加1
         String GEN_GL_NO = start + "";//需修改：放款授权号，每次发起新请求，需要修改成一个新的号码;
         String appl_seq = GEN_GL_NO;//需修改：申请借据表的seq，需要修改成一个新的号码 ;
         String appl_cde = "QD" + GEN_GL_NO;//需修改：申请借据表的申请编号，需要修改成一个新的号码;
-        String releaseDate = "2024-09-16"; // 需修改：放款日期；需要改成和本地glloans.s_ctrl当期要一致;
+        String releaseDate = "2033-11-25"; // 需修改：放款日期；需要改成和本地glloans.s_ctrl当期要一致;
         String DUE_DAY = releaseDate.substring(8);// 取放款日期对应的后两位（日）
-        String TNR = "3";//可修改：借据期数
+        String TNR = "6";//可修改：借据期数
         String endDate = "";//TNR有值时，可以传空
-        String id_no = "410102198803071971";//可修改：身份证号
-        String cust_name = "王十";//可修改：借款人名
+        String id_no = "370783198306109391";//可修改：身份证号
+        String cust_name = "零三";//可修改：借款人名
         String loan_typ = "YGD_005";//可修改：贷款品种号
         String PAYM_FREQ_UNIT = "M";//间隔单位按月
         String PAYM_FREQ_FREQ = "1";//间隔
@@ -151,13 +152,13 @@ public class TestHs {
                 append("<BCH_CDE>900000000</BCH_CDE>\n").
                 append("<LOAN_NO>HT").append(appl_cde).append("001</LOAN_NO>\n").
                 append("<BANK_CDE>900000000</BANK_CDE>\n").
-                append("<CUST_ID>250719289537986560</CUST_ID>\n").
+                append("<CUST_ID>303258619812556800</CUST_ID>\n").
                 append("<CUST_NAME>").append(cust_name).append("</CUST_NAME>\n").
                 append("<ID_TYPE>20</ID_TYPE>\n").append("<ID_NO>").append(id_no).append("</ID_NO>\n").
                 append("<ISS_CTRY>CN</ISS_CTRY>\n").
                 append("<DEALER_CDE></DEALER_CDE>\n").
                 append("<LOAN_CCY>CNY</LOAN_CCY>\n").
-                append("<ORIG_PRCP>20000.00</ORIG_PRCP>\n").
+                append("<ORIG_PRCP>1000.00</ORIG_PRCP>\n").
                 append("<LOAN_ACTV_DT>").append(releaseDate).append("</LOAN_ACTV_DT>\n").
                 append("<TYP_GRP>02</TYP_GRP>\n").
                 append("<LOAN_TYP>").append(loan_typ).append("</LOAN_TYP>\n").
@@ -215,19 +216,19 @@ public class TestHs {
                 append("<GEN_GL_NO>").append(GEN_GL_NO).append("</GEN_GL_NO>\n").
                 append("<LOAN_NO>HT").append(appl_cde).append("001</LOAN_NO>\n").
                 append("<LOAN_ACCT_TYP>ACTV</LOAN_ACCT_TYP>\n").
-                append("<ACCT_NO>6214853713666502</ACCT_NO>\n").
+                append("<ACCT_NO>6217000990000357836</ACCT_NO>\n").
                 append("<ACCT_CCY_CDE>CNY</ACCT_CCY_CDE>\n").
-                append("<ACCT_BANK_CDE>308</ACCT_BANK_CDE>\n").
+                append("<ACCT_BANK_CDE>105</ACCT_BANK_CDE>\n").
                 append("<ACCT_BCH_CDE></ACCT_BCH_CDE>\n").
                 append("<ACCT_NAME>").append(cust_name).append("</ACCT_NAME>\n").
                 append("<ACCT_ISS_CTRY>CN</ACCT_ISS_CTRY>\n").
                 append("<ACCT_TYP>01</ACCT_TYP>\n").
                 append("<ACCT_ID_TYPE>20</ACCT_ID_TYPE>\n").
                 append("<ACCT_ID_NO>").append(id_no).append("</ACCT_ID_NO>\n").
-                append("<ACCT_CARD_NO>6214853713660001</ACCT_CARD_NO>\n").
-                append("<ACCT_BCH_NAM>招商银行</ACCT_BCH_NAM>\n").
+                append("<ACCT_CARD_NO>6217000990000357836</ACCT_CARD_NO>\n").
+                append("<ACCT_BCH_NAM>中国建设银行</ACCT_BCH_NAM>\n").
                 append("<ACCT_BANK_ADD>广东省/深圳市</ACCT_BANK_ADD>\n").
-                append("<ACCT_BANK_NAM>招商银行</ACCT_BANK_NAM>\n").
+                append("<ACCT_BANK_NAM>中国建设银行</ACCT_BANK_NAM>\n").
                 append("<BANK_PROV>广东省</BANK_PROV>\n").
                 append("<BANK_CITY>深圳市</BANK_CITY>\n").
                 append("</MX>\n").
@@ -235,19 +236,19 @@ public class TestHs {
                 append("<GEN_GL_NO>").append(GEN_GL_NO).append("</GEN_GL_NO>\n").
                 append("<LOAN_NO>HT").append(appl_cde).append("001</LOAN_NO>\n").
                 append("<LOAN_ACCT_TYP>PAYM</LOAN_ACCT_TYP>\n").
-                append("<ACCT_NO>6214853713660001</ACCT_NO>\n").
+                append("<ACCT_NO>6217000990000357836</ACCT_NO>\n").
                 append("<ACCT_CCY_CDE>CNY</ACCT_CCY_CDE>\n").
-                append("<ACCT_BANK_CDE>308</ACCT_BANK_CDE>\n").
+                append("<ACCT_BANK_CDE>105</ACCT_BANK_CDE>\n").
                 append("<ACCT_BCH_CDE></ACCT_BCH_CDE>\n").
                 append("<ACCT_NAME>").append(cust_name).append("</ACCT_NAME>\n").
                 append("<ACCT_ISS_CTRY>CN</ACCT_ISS_CTRY>\n").
                 append("<ACCT_TYP>01</ACCT_TYP>\n").
                 append("<ACCT_ID_TYPE>20</ACCT_ID_TYPE>\n").
                 append("<ACCT_ID_NO>").append(id_no).append("</ACCT_ID_NO>\n").
-                append("<ACCT_CARD_NO>6214853713660001</ACCT_CARD_NO>\n").
-                append("<ACCT_BCH_NAM>招商银行</ACCT_BCH_NAM>\n").
+                append("<ACCT_CARD_NO>6217000990000357836</ACCT_CARD_NO>\n").
+                append("<ACCT_BCH_NAM>中国建设银行</ACCT_BCH_NAM>\n").
                 append("<ACCT_BANK_ADD>广东省/深圳市</ACCT_BANK_ADD>\n").
-                append("<ACCT_BANK_NAM>招商银行</ACCT_BANK_NAM>\n").
+                append("<ACCT_BANK_NAM>中国建设银行</ACCT_BANK_NAM>\n").
                 append("<BANK_PROV>广东省</BANK_PROV>\n").
                 append("<BANK_CITY>深圳市</BANK_CITY>\n").
                 append("</MX>\n").
@@ -265,7 +266,7 @@ public class TestHs {
                 append("<BASE_AMT>10000.00</BASE_AMT>\n").
                 append("<CHRG_PCT>0.016030000</CHRG_PCT>\n").
                 append("<LOAN_ACCT_TYP>PAYM</LOAN_ACCT_TYP>\n").
-                append("<FEE_ACCT_NO>6214853713660001</FEE_ACCT_NO>\n").
+                append("<FEE_ACCT_NO>6217000990000357836</FEE_ACCT_NO>\n").
                 append("<HOLD_FEE_IND>Y</HOLD_FEE_IND>\n").
                 append("<PAYM_FREQ_UNIT>M</PAYM_FREQ_UNIT>\n").
                 append("<FEE_SPAN>1</FEE_SPAN>\n").
@@ -289,7 +290,7 @@ public class TestHs {
                 append("<BASE_AMT>10000.00</BASE_AMT>\n").
                 append("<CHRG_PCT>0.016030000</CHRG_PCT>\n").
                 append("<LOAN_ACCT_TYP>PAYM</LOAN_ACCT_TYP>\n").
-                append("<FEE_ACCT_NO>6214853713660001</FEE_ACCT_NO>\n").
+                append("<FEE_ACCT_NO>6217000990000357836</FEE_ACCT_NO>\n").
                 append("<HOLD_FEE_IND>Y</HOLD_FEE_IND>\n").
                 append("<PAYM_FREQ_UNIT>M</PAYM_FREQ_UNIT>\n").
                 append("<FEE_SPAN>2</FEE_SPAN>\n").

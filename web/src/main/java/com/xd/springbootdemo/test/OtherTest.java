@@ -1,5 +1,6 @@
 package com.xd.springbootdemo.test;
 
+import com.xd.springbootdemo.exception.ExpectedException;
 import com.xd.springbootdemo.util.DateUtil;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
@@ -92,6 +93,65 @@ public class OtherTest {
     }
 
     @Test
+    public void testGetThreadStr() {
+        for (int i = 0; i < 10; i++) {
+            try {
+                System.out.println(getThreadStr(100, 8, i));
+            } catch (ExpectedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("--------------------");
+        for (int i = 0; i < 10; i++) {
+            try {
+                System.out.println(getThreadStr(100, 5, i));
+            } catch (ExpectedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("--------------------");
+        for (int i = 0; i < 5; i++) {
+            try {
+                System.out.println(getThreadStr(100, 5, i));
+            } catch (ExpectedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("--------------------");
+        for (int i = 0; i < 4; i++) {
+            try {
+                System.out.println(getThreadStr(100, 5, i));
+            } catch (ExpectedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 线程查找串
+     *
+     * @param total
+     * @param threadCount
+     * @param counter
+     * @return
+     */
+    public String getThreadStr(int total, int threadCount, int counter) throws ExpectedException {
+        if (counter < 0) {
+            throw new ExpectedException("thread counter can not permit negative data");
+        }
+        StringBuilder rst = new StringBuilder();
+        for (int i = 0; i < total; i++) {
+            if (i % threadCount == counter) {
+                rst.append(i).append(",");
+            }
+        }
+        if (rst.length() > 0) {
+            rst.deleteCharAt(rst.length() - 1);
+        }
+        return rst.toString();
+    }
+
+    @Test
     public void testCompareDateStr() {
         System.out.println(DateUtil.compareStrDate("2020-10-03", "2020-10-02"));
     }
@@ -100,6 +160,19 @@ public class OtherTest {
     public void testSubString() {
         String str = "HT123456001";
         System.out.println(str.substring(2, str.length() - 3));
+    }
+
+    @Test
+    public void testAdd() {
+        int count = 1;
+        System.out.println(count++);
+        System.out.println(++count);
+        System.out.println(count + 1);
+    }
+
+    @Test
+    public void testAdd1() {
+        System.out.println(OtherTest.class.getClassLoader().getResource("zyxj-ftp-msok").getPath());
     }
 
     @Test
