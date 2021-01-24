@@ -90,9 +90,16 @@ public class DateExtUtils {
     /**
      * 获取指定时间日期:MM月dd日
      */
-    public static String getDateMonthFromDate(String date) {
+    public static String getMonthDateFromDate(String date) {
         LocalDate localDate = LocalDate.parse(date, df);
         return localDate.format(dm);
+    }
+
+    /**
+     * 获取指定时间日期:MM月dd日
+     */
+    public static String getCurMonthDate() {
+        return LocalDate.now().format(dm);
     }
 
     /**
@@ -111,5 +118,10 @@ public class DateExtUtils {
     public static Long getDayRemainSeconds(){
         LocalDateTime midnight = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         return ChronoUnit.SECONDS.between(LocalDateTime.now(),midnight);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getCurMonthDate());
+        System.out.println(getMonthDateFromDate("2021-01-24"));
     }
 }

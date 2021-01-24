@@ -2,8 +2,10 @@ package com.xd.springbootdemo.test;
 
 import com.xd.springbootdemo.exception.ExpectedException;
 import com.xd.springbootdemo.util.DateUtil;
+import org.jboss.netty.util.internal.StringUtil;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -76,6 +78,27 @@ public class OtherTest {
         } finally {
             System.out.println("finally");
         }
+    }
+
+    @Test
+    public void testStringValueOf() {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map1 = new HashMap<>();
+        map.put("A", null);
+        map1.put("A", null);
+        System.out.println(String.valueOf(map.get("A")) + "1");
+        System.out.println(String.valueOf(map1.get("A")) + "1");
+        System.out.println(String.valueOf(BigDecimal.ONE.add(new BigDecimal(2))) + "1");
+        System.out.println(String.valueOf(null) + "2");
+        System.out.println(isStrNotNull(String.valueOf(map.get("A"))));
+    }
+
+    public static boolean isStrNull(String str) {
+        return str == null || "null".equals(str) || "".equals(str.trim());
+    }
+
+    public static boolean isStrNotNull(String str) {
+        return !isStrNull(str);
     }
 
     @Test
