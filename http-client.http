@@ -24,6 +24,7 @@ GET http://{{host}}}:8280/ycloans/LoanAutoPayTask?taskType=com.yuchengtech.ycloa
 
 ### 生产环境手动触发定时任务
 # curl -v http://127.0.0.1:28078/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.XwLoanCollectionTimeTaskOP
+curl -v http://127.0.0.1:28080/LoanAutoPayTask?taskType=com.yuchengtech.ycloans.schedule.LoanAutoPayJjTask1OP
 
 ### 检查日终
 GET http://127.0.0.1/WarmMonitorServlet.action?scene=DAYBAT_FAIL
