@@ -12,7 +12,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 动态线程池
+ * 动态线程池，参考文章：
+ * 美团：https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html
+ * 尹吉欢：https://www.cnblogs.com/yinjihuan/p/13151887.html，项目地址：https://github.com/yinjihuan/kitty
  */
 public class ThreadPoolManager {
 
