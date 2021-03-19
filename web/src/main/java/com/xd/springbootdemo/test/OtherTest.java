@@ -305,4 +305,22 @@ public class OtherTest {
             return String.format("T{i=%d, j='%s', innerT=%s}", i, j, innerT);
         }
     }
+
+    public interface Father {
+        default void getMsg() {
+            Class clazz = this.getClass();
+            System.out.println(clazz.toString());
+        }
+    }
+
+    public class Son implements Father {
+
+    }
+
+    @Test
+    public void testInterface() {
+        Son son = new Son();
+        son.getMsg();
+    }
+
 }
