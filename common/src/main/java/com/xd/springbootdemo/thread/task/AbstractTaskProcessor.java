@@ -17,7 +17,7 @@ public abstract class AbstractTaskProcessor {
 
     protected abstract TaskResponse accept(TaskRequest request);
 
-    public Future<TaskResponse> process(@NotNull TaskRequest request) {
+    public final Future<TaskResponse> process(@NotNull TaskRequest request) {
         before(request);
         TaskThreadPoolExecutor executor = ThreadPoolManager.getThreadPoolExecutor(request.getCode());
         if (executor == null) {
