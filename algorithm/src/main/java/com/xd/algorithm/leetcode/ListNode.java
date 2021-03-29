@@ -1,7 +1,9 @@
-package com.xd.algorithm.LinkList;
+package com.xd.algorithm.leetcode;
 
 /**
- * 链表
+ * 链表节点
+ *
+ * @author xd
  */
 public class ListNode {
 

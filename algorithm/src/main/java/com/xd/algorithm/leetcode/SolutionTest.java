@@ -1,4 +1,4 @@
-package com.xd.algorithm.LinkList;
+package com.xd.algorithm.leetcode;
 
 import org.junit.Test;
 
@@ -8,8 +8,9 @@ import java.util.Stack;
 
 /**
  * 题解
+ * @author xd
  */
-public class Solution {
+public class SolutionTest {
 
     /**
      * 题目：给定头节点，反转链表
@@ -118,8 +119,9 @@ public class Solution {
         Set<ListNode> set = new HashSet<>();
         while (head != null) {
             //如果重复出现说明有环
-            if (!set.add(head))
+            if (!set.add(head)) {
                 return head;
+            }
             //否则就把当前节点加入到集合中
             head = head.next;
         }
@@ -150,7 +152,8 @@ public class Solution {
                 stack.push(c);
                 continue;
             }
-            if (stack.size() <= 0) {// 如果是空栈，说明没有与之匹配的左括号
+            // 如果是空栈，说明没有与之匹配的左括号
+            if (stack.size() <= 0) {
                 return false;
             }
             char p = stack.pop();
@@ -159,7 +162,8 @@ public class Solution {
             }
         }
         //return pushCount == popCount;// 记录入栈和出栈次数是否一直，如果不一致，说明不匹配
-        return stack.isEmpty();// 不用通过计数器记录出入栈次数，直接判断栈是否是空的，如果是空的说明全匹配上了
+        // 不用通过计数器记录出入栈次数，直接判断栈是否是空的，如果是空的说明全匹配上了
+        return stack.isEmpty();
     }
 
     /**
