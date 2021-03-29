@@ -17,6 +17,10 @@ public class DoubleLinkedList<E> implements Serializable {
 
     private Node<E> last;
 
+    public boolean isEmpty() {
+        return size > 0;
+    }
+
     public void addFirst(E e) {
         Node<E> node = new Node<>(e);
         node.setNext(first);

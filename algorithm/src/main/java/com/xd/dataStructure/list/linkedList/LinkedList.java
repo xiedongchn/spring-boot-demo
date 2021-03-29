@@ -15,6 +15,10 @@ public class LinkedList<E> implements Serializable {
 
     private Node<E> first;
 
+    public boolean isEmpty() {
+        return size > 0;
+    }
+
     public void addFirst(E e) {
         Node<E> node = new Node<>(e);
         node.setNext(first);
