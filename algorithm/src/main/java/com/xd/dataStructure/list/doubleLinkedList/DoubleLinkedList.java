@@ -18,7 +18,7 @@ public class DoubleLinkedList<E> implements Serializable {
     private Node<E> last;
 
     public boolean isEmpty() {
-        return size > 0;
+        return size <= 0;
     }
 
     public void addFirst(E e) {
@@ -58,7 +58,7 @@ public class DoubleLinkedList<E> implements Serializable {
     }
 
     public void removeFirst() {
-        if (size <= 0) {
+        if (isEmpty()) {
             throw new IndexOutOfBoundsException(getIndexOutOfBoundsString(0));
         }
         first = first.getNext();
@@ -71,7 +71,7 @@ public class DoubleLinkedList<E> implements Serializable {
     }
 
     public void removeLast() {
-        if (size <= 0) {
+        if (isEmpty()) {
             throw new IndexOutOfBoundsException(getIndexOutOfBoundsString(0));
         }
         last = last.getPrev();

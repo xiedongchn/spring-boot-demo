@@ -16,7 +16,7 @@ public class LinkedList<E> implements Serializable {
     private Node<E> first;
 
     public boolean isEmpty() {
-        return size > 0;
+        return size <= 0;
     }
 
     public void addFirst(E e) {
@@ -41,7 +41,7 @@ public class LinkedList<E> implements Serializable {
     }
 
     public void removeFirst() {
-        if (size <= 0) {
+        if (isEmpty()) {
             throw new IndexOutOfBoundsException(getIndexOutOfBoundsString(0));
         }
         first = first.getNext();
