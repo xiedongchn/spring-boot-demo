@@ -1,6 +1,7 @@
 -- ddl start
 CREATE DATABASE IF NOT EXISTS test default charset utf8 collate utf8_general_ci;
 
+use test;
 create table IF NOT EXISTS test.user (
      id   bigint(32)  not null comment '主键' auto_increment primary key,
      name varchar(10) not null comment '姓名',
