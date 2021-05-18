@@ -1,5 +1,8 @@
 package com.xd.springbootdemo.jvm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * -XX:+PrintHeapAtGC：打印GC前堆使用情况
  * -XX:TargetSurvivorRatio=80：动态年龄占比，默认50，即年龄1+年龄2+......+年龄n的占比达到50%，以上，则大于等于年龄n的对象直接进入老年代
@@ -11,7 +14,7 @@ package com.xd.springbootdemo.jvm;
 public class JvmTest {
 
     public static void main(String[] args) {// main方法执行时入栈
-        testBigObject1();
+        testJmapDump();
     }
 
     /**
@@ -163,6 +166,18 @@ public class JvmTest {
         // 再分配一个200MB的对象，此时eden空间只有800M-(200M*3+12800KB+其它对象)空闲，内存不足，触发YGC
         // ygc后，这个200M的数组对象进入eden，12800KB的数组和其它对象在from survivor中
         byte[] array3 = new byte[1024 * 1024 * 200];
+    }
+
+    public static void testJmapDump() {
+        List<Exception> exceptions = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            exceptions.add(new Exception("test"));
+        }
+        try {
+            Thread.sleep(1000000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
