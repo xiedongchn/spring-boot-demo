@@ -9,12 +9,12 @@ import org.springframework.cglib.proxy.MethodInterceptor;
 public class MetaspaceOomTest {
 
     public static void main(String[] args) {
-        test2();
+        test1();
     }
 
     /**
      * 测试元数据空间OOM
-     * JVM参数：-XX:MetaspaceSize=10m -XX:MaxMetaspaceSize=10m -XX:NewSize=100m -XX:MaxNewSize=100m -XX:InitialHeapSize=200M -XX:MaxHeapSize=200M -XX:SurvivorRatio=8 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:MetaOOM1.log
+     * JVM参数：-XX:MetaspaceSize=10m -XX:MaxMetaspaceSize=10m -XX:NewSize=100m -XX:MaxNewSize=100m -XX:InitialHeapSize=200M -XX:MaxHeapSize=200M -XX:SurvivorRatio=8 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./ -Xloggc:MetaOOM1.log
      */
     public static void test1() {
         int counter = 0;
@@ -38,7 +38,7 @@ public class MetaspaceOomTest {
 
     /**
      * 测试元数据空间OOM
-     * JVM参数：-XX:MetaspaceSize=10m -XX:MaxMetaspaceSize=10m -XX:NewSize=100m -XX:MaxNewSize=100m -XX:InitialHeapSize=200M -XX:MaxHeapSize=200M -XX:SurvivorRatio=8 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:MetaOOM1.log
+     * JVM参数：-XX:MetaspaceSize=10m -XX:MaxMetaspaceSize=10m -XX:NewSize=100m -XX:MaxNewSize=100m -XX:InitialHeapSize=200M -XX:MaxHeapSize=200M -XX:SurvivorRatio=8 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:MetaOOM2.log
      *
      * 这个方法报错是：StackOverflowError，因为调用的是invoke方法而不是invokeSuper
      * cglib的net.sf.cglib.proxy.MethodProxy中提到了如果调用invoke并且传递了object, 则会导致反复拦截相当于死循环，从而导致Stackoverflow
@@ -51,7 +51,7 @@ public class MetaspaceOomTest {
         enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) -> {
             // 在执行run方法之前执行的逻辑
             if ("run".equals(method.getName())) {
-                System.out.print("汽车启动之前，进行安全检查..");
+                System.out.println("汽车启动之前，进行安全检查..");
             }
             // 这里使用invoke而不是invokeSuper
             return methodProxy.invoke(o, objects);

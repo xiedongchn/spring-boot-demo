@@ -16,7 +16,7 @@ public class HeapOomTest {
 
     /**
      * 设置堆总大小只有10M，让JVM尽快的溢出
-     * JVM参数：-XX:MetaspaceSize=10m -XX:MaxMetaspaceSize=10m -XX:InitialHeapSize=10M -XX:MaxHeapSize=10M -XX:SurvivorRatio=8 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -Xloggc:HeapOOM1.log
+     * JVM参数：-XX:MetaspaceSize=10m -XX:MaxMetaspaceSize=10m -XX:InitialHeapSize=10M -XX:MaxHeapSize=10M -XX:SurvivorRatio=8 -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./ -Xloggc:HeapOOM1.log
      */
     public static void test1() {
         int counter = 1;
