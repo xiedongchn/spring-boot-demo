@@ -67,6 +67,7 @@ public interface TaskProcessor {
         }
     }
 
-    default void after(TaskRequest request, Future<TaskResponse> future) {}
+    default void after(TaskRequest request, Future<TaskResponse> future) {
+    }
 
 }

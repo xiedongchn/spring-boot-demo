@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * 卡号合法性校验
  * 需求：通过用户的卡号来校验，前缀和后缀符合一定的规则
  */
-@Target({ FIELD })//可以放到什么上
+@Target({FIELD})//可以放到什么上
 @Retention(RUNTIME)
 @Documented
 @Constraint(validatedBy = {CardNumberConstraintValidator.class})
@@ -23,9 +23,9 @@ public @interface CardNumberValidator {
 
     String message() default "com.xd.springbootdemo.validator.message";
 
-    Class<?>[] groups() default { };
+    Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default { };
+    Class<? extends Payload>[] payload() default {};
 
     /**
      * @return value the element must be lower or equal to
@@ -37,7 +37,7 @@ public @interface CardNumberValidator {
      *
      * @see Max
      */
-    @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
+    @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
     @Retention(RUNTIME)
     @Documented
     @interface List {

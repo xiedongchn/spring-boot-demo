@@ -37,7 +37,7 @@ public class RequestProcessThread implements Callable<Integer> {
                 Map<Long, Boolean> flagMap = requestQueue.getFlagMap();
                 if (request instanceof ProductQuotaDbUpdateRequest) {
                     flagMap.put(((ProductQuotaDbUpdateRequest) request).getProductId(), true);
-                } else if(request instanceof ProductQuotaCacheUpdateRequest) {
+                } else if (request instanceof ProductQuotaCacheUpdateRequest) {
                     Boolean flag = flagMap.get(((ProductQuotaCacheUpdateRequest) request).getProductId());
                     if (flag == null || flag) {
                         flagMap.put(((ProductQuotaCacheUpdateRequest) request).getProductId(), false);

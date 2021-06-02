@@ -35,6 +35,7 @@ public class DateExtUtils {
 
     /**
      * 字符串时间与Date时间转换
+     *
      * @param dateStr yyyy-MM-dd HH:mm:ss
      */
     public static Date toDateTime(String dateStr) {
@@ -115,9 +116,9 @@ public class DateExtUtils {
     /**
      * 获取当天剩余秒数
      */
-    public static Long getDayRemainSeconds(){
+    public static Long getDayRemainSeconds() {
         LocalDateTime midnight = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        return ChronoUnit.SECONDS.between(LocalDateTime.now(),midnight);
+        return ChronoUnit.SECONDS.between(LocalDateTime.now(), midnight);
     }
 
     public static void main(String[] args) {

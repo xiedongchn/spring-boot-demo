@@ -87,8 +87,9 @@ public class Response {
      * Returns the response stream.<br>
      * This method cannot be called after calling asString() or asDcoument()<br>
      * It is suggested to call disconnect() after consuming the stream.
-     *
+     * <p>
      * Disconnects the internal HttpURLConnection silently.
+     *
      * @return response body stream
      * @throws WeiboException
      * @see #disconnect()
@@ -103,6 +104,7 @@ public class Response {
     /**
      * Returns the response body as string.<br>
      * Disconnects the internal HttpURLConnection silently.
+     *
      * @return response body
      * @throws WeiboException
      */

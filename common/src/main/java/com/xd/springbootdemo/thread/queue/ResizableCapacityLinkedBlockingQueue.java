@@ -35,9 +35,9 @@ import java.util.function.Consumer;
  * <a href="{@docRoot}/../technotes/guides/collections/index.html">
  * Java Collections Framework</a>.
  *
- * @since 1.5
- * @author Doug Lea
  * @param <E> the type of elements held in this collection
+ * @author Doug Lea
+ * @since 1.5
  */
 public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> implements BlockingQueue<E>,
         java.io.Serializable {
@@ -92,13 +92,19 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
          */
         Node<E> next;
 
-        Node(E x) { item = x; }
+        Node(E x) {
+            item = x;
+        }
     }
 
-    /** The capacity bound, or Integer.MAX_VALUE if none */
+    /**
+     * The capacity bound, or Integer.MAX_VALUE if none
+     */
     private volatile int capacity;
 
-    /** Current number of elements */
+    /**
+     * Current number of elements
+     */
     private final AtomicInteger count = new AtomicInteger();
 
     /**
@@ -113,16 +119,24 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
      */
     private transient Node<E> last;
 
-    /** Lock held by take, poll, etc */
+    /**
+     * Lock held by take, poll, etc
+     */
     private final ReentrantLock takeLock = new ReentrantLock();
 
-    /** Wait queue for waiting takes */
+    /**
+     * Wait queue for waiting takes
+     */
     private final Condition notEmpty = takeLock.newCondition();
 
-    /** Lock held by put, offer, etc */
+    /**
+     * Lock held by put, offer, etc
+     */
     private final ReentrantLock putLock = new ReentrantLock();
 
-    /** Wait queue for waiting puts */
+    /**
+     * Wait queue for waiting puts
+     */
     private final Condition notFull = putLock.newCondition();
 
     /**
@@ -217,7 +231,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
      *
      * @param capacity the capacity of this queue
      * @throws IllegalArgumentException if {@code capacity} is not greater
-     *         than zero
+     *                                  than zero
      */
     public ResizableCapacityLinkedBlockingQueue(int capacity) {
         if (capacity <= 0) throw new IllegalArgumentException();
@@ -233,7 +247,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
      *
      * @param c the collection of elements to initially contain
      * @throws NullPointerException if the specified collection or any
-     *         of its elements are null
+     *                              of its elements are null
      */
     public ResizableCapacityLinkedBlockingQueue(Collection<? extends E> c) {
         this(Integer.MAX_VALUE);
@@ -261,6 +275,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
 
     // this doc comment is overridden to remove the reference to collections
     // greater in size than Integer.MAX_VALUE
+
     /**
      * Returns the number of elements in this queue.
      *
@@ -272,6 +287,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
 
     // this doc comment is a modified copy of the inherited doc comment,
     // without the reference to unlimited queues.
+
     /**
      * Returns the number of additional elements that this queue can ideally
      * (in the absence of memory or resource constraints) accept without
@@ -331,7 +347,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
      * necessary up to the specified wait time for space to become available.
      *
      * @return {@code true} if successful, or {@code false} if
-     *         the specified waiting time elapses before space is available
+     * the specified waiting time elapses before space is available
      * @throws InterruptedException {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
      */
@@ -596,8 +612,8 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
      * The following code can be used to dump the queue into a newly
      * allocated array of {@code String}:
      *
-     *  <pre> {@code String[] y = x.toArray(new String[0]);}</pre>
-     *
+     * <pre> {@code String[] y = x.toArray(new String[0]);}</pre>
+     * <p>
      * Note that {@code toArray(new Object[0])} is identical in function to
      * {@code toArray()}.
      *
@@ -605,9 +621,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
      *          be stored, if it is big enough; otherwise, a new array of the
      *          same runtime type is allocated for this purpose
      * @return an array containing all of the elements in this queue
-     * @throws ArrayStoreException if the runtime type of the specified array
-     *         is not a supertype of the runtime type of every element in
-     *         this queue
+     * @throws ArrayStoreException  if the runtime type of the specified array
+     *                              is not a supertype of the runtime type of every element in
+     *                              this queue
      * @throws NullPointerException if the specified array is null
      */
     @SuppressWarnings("unchecked")
@@ -616,12 +632,12 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
         try {
             int size = count.get();
             if (a.length < size)
-                a = (T[])java.lang.reflect.Array.newInstance
+                a = (T[]) java.lang.reflect.Array.newInstance
                         (a.getClass().getComponentType(), size);
 
             int k = 0;
             for (Node<E> p = head.next; p != null; p = p.next)
-                a[k++] = (T)p.item;
+                a[k++] = (T) p.item;
             if (a.length > k)
                 a[k] = null;
             return a;
@@ -639,7 +655,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
 
             StringBuilder sb = new StringBuilder();
             sb.append('[');
-            for (;;) {
+            for (; ; ) {
                 E e = p.item;
                 sb.append(e == this ? "(this Collection)" : e);
                 p = p.next;
@@ -769,13 +785,13 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
 
         /**
          * Returns the next live successor of p, or null if no such.
-         *
+         * <p>
          * Unlike other traversal methods, iterators need to handle both:
          * - dequeued nodes (p.next == p)
          * - (possibly multiple) interior removed nodes (p.item == null)
          */
         private Node<E> nextNode(Node<E> p) {
-            for (;;) {
+            for (; ; ) {
                 Node<E> s = p.next;
                 if (s == p)
                     return head.next;
@@ -821,7 +837,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
         }
     }
 
-    /** A customized variant of Spliterators.IteratorSpliterator */
+    /**
+     * A customized variant of Spliterators.IteratorSpliterator
+     */
     static final class LBQSpliterator<E> implements Spliterator<E> {
         static final int MAX_BATCH = 1 << 25;  // max batch array size;
         final ResizableCapacityLinkedBlockingQueue<E> queue;
@@ -829,12 +847,15 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
         int batch;          // batch size for splits
         boolean exhausted;  // true when no more nodes
         long est;           // size estimate
+
         LBQSpliterator(ResizableCapacityLinkedBlockingQueue<E> queue) {
             this.queue = queue;
             this.est = queue.size();
         }
 
-        public long estimateSize() { return est; }
+        public long estimateSize() {
+            return est;
+        }
 
         public Spliterator<E> trySplit() {
             Node<E> h;
@@ -861,8 +882,7 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
                 if ((current = p) == null) {
                     est = 0L;
                     exhausted = true;
-                }
-                else if ((est -= i) < 0L)
+                } else if ((est -= i) < 0L)
                     est = 0L;
                 if (i > 0) {
                     batch = i;
@@ -944,11 +964,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
      * <p>The {@code Spliterator} reports {@link Spliterator#CONCURRENT},
      * {@link Spliterator#ORDERED}, and {@link Spliterator#NONNULL}.
      *
-     * @implNote
-     * The {@code Spliterator} implements {@code trySplit} to permit limited
-     * parallelism.
-     *
      * @return a {@code Spliterator} over the elements in this queue
+     * @implNote The {@code Spliterator} implements {@code trySplit} to permit limited
+     * parallelism.
      * @since 1.8
      */
     public Spliterator<E> spliterator() {
@@ -985,10 +1003,11 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
 
     /**
      * Reconstitutes this queue from a stream (that is, deserializes it).
+     *
      * @param s the stream
      * @throws ClassNotFoundException if the class of a serialized object
-     *         could not be found
-     * @throws java.io.IOException if an I/O error occurs
+     *                                could not be found
+     * @throws java.io.IOException    if an I/O error occurs
      */
     private void readObject(java.io.ObjectInputStream s)
             throws java.io.IOException, ClassNotFoundException {
@@ -999,9 +1018,9 @@ public class ResizableCapacityLinkedBlockingQueue<E> extends AbstractQueue<E> im
         last = head = new Node<E>(null);
 
         // Read in all elements and place in queue
-        for (;;) {
+        for (; ; ) {
             @SuppressWarnings("unchecked")
-            E item = (E)s.readObject();
+            E item = (E) s.readObject();
             if (item == null)
                 break;
             add(item);

@@ -17,6 +17,7 @@ import java.util.Map;
 public class RequestManager {
 
     private static final Map<String, IRequestHandler<?>> MAP = new HashMap<>();
+
     static {
         MAP.put(AbstractRequest.PQDU, new ProductQuotaDbUpdateHandler());
         MAP.put(AbstractRequest.PQCU, new ProductQuotaCacheUpdateHandler());

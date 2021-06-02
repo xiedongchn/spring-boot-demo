@@ -16,7 +16,8 @@
         <module>web</module>
         <module>common</module>
         <module>algorithm</module>
-        <module>provider</module>
+        <module>service</module>
+        <module>redis</module>
     </modules>
 
     <parent>
@@ -51,6 +52,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>-->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
     <!-- 父pom不要添加此插件，否则会导致需要打成依赖包的子模块报找不到main class的错， -->

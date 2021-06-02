@@ -32,6 +32,7 @@ public class ThreadPoolProperties {
 
     /**
      * 队列类型
+     *
      * @see QueueTypeEnum
      */
     private String queueType = QueueTypeEnum.LINKED_BLOCKING_QUEUE.getType();
@@ -43,6 +44,7 @@ public class ThreadPoolProperties {
 
     /**
      * 拒绝策略
+     *
      * @see RejectedExecutionHandlerEnum
      */
     private String rejectedExecutionType = RejectedExecutionHandlerEnum.ABORT_POLICY.getType();

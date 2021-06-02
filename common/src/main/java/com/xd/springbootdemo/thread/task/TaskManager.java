@@ -25,7 +25,8 @@ public class TaskManager {
         return TaskManager.getInstance().getProcessor(request.getCode()).process(request);
     }
 
-    private TaskManager() {}
+    private TaskManager() {
+    }
 
     public static TaskManager getInstance() {
         if (manager == null) {

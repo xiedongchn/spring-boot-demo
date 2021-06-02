@@ -12,7 +12,9 @@ public enum RejectedExecutionHandlerEnum {
 
     RejectedExecutionHandlerEnum(String type) {
         this.type = type;
-    };
+    }
+
+    ;
 
     private final String type;
 

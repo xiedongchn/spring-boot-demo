@@ -25,7 +25,7 @@ public class DateUtil {
     /**
      * 日期字符串转Date
      *
-     * @param str 日期字符串
+     * @param str        日期字符串
      * @param dateFormat 日期格式
      * @return Date
      */
@@ -40,7 +40,7 @@ public class DateUtil {
         return date;
     }
 
-    public static int compareStrDate(String date1, String date2){
+    public static int compareStrDate(String date1, String date2) {
         String formatStyle = "yyyy-MM-dd";
         date2 = date2 == null ? DateUtil.getCurrentDate() : date2;
         DateFormat df = new SimpleDateFormat(formatStyle);
@@ -52,11 +52,11 @@ public class DateUtil {
         } catch (Exception e3) {
             System.out.println("wrong occured");
         }
-        if(c1.after(c2)){
+        if (c1.after(c2)) {
             return 1;
-        }else if(c1.before(c2)){
+        } else if (c1.before(c2)) {
             return -1;
-        }else{
+        } else {
             return 0;
         }
     }

@@ -101,7 +101,7 @@ public class ThreadPoolManager {
      * 获取拒绝策略
      *
      * @param rejectedExecutionType 拒绝策略
-     * @param threadPoolName 线程池名称
+     * @param threadPoolName        线程池名称
      * @return RejectedExecutionHandler
      */
     private static RejectedExecutionHandler getRejectedExecutionHandler(String rejectedExecutionType, String threadPoolName) {

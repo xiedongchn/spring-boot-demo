@@ -17,48 +17,51 @@ import java.security.SecureRandom;
  */
 public class RSA {
 
-	public static final int KEYSIZE = 512;
-	
-	private KeyPair keyPair;
-	
-	/**
-	 * 生成秘钥对
-	 * @return
-	 * @throws Exception
-	 */
-	public KeyPair generateKeyPair() throws Exception {
-		KeyPairGenerator pairgen = KeyPairGenerator.getInstance("RSA");
-		SecureRandom random = new SecureRandom();
-		pairgen.initialize(RSA.KEYSIZE, random);
-		this.keyPair = pairgen.generateKeyPair();
-		return this.keyPair;
-	}
+    public static final int KEYSIZE = 512;
 
-	/**
-	 * 加密秘钥
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 */
-	public byte[] wrapKey(Key key) throws Exception {
-		Cipher cipher = Cipher.getInstance("RSA");
-		cipher.init(Cipher.WRAP_MODE, this.keyPair.getPrivate());
-		byte[] wrappedKey = cipher.wrap(key);
-		return wrappedKey;
-	}
-	
-	/**
-	 * 解密秘钥
-	 * @param wrapedKeyBytes
-	 * @return
-	 * @throws Exception
-	 */
-	public Key unwrapKey(byte[] wrapedKeyBytes) throws Exception {
-		Cipher cipher = Cipher.getInstance("RSA");
-		cipher.init(Cipher.UNWRAP_MODE, this.keyPair.getPublic());
-		Key key = cipher.unwrap(wrapedKeyBytes, "AES", Cipher.SECRET_KEY);
-		return key;
-	}
-	
+    private KeyPair keyPair;
+
+    /**
+     * 生成秘钥对
+     *
+     * @return
+     * @throws Exception
+     */
+    public KeyPair generateKeyPair() throws Exception {
+        KeyPairGenerator pairgen = KeyPairGenerator.getInstance("RSA");
+        SecureRandom random = new SecureRandom();
+        pairgen.initialize(RSA.KEYSIZE, random);
+        this.keyPair = pairgen.generateKeyPair();
+        return this.keyPair;
+    }
+
+    /**
+     * 加密秘钥
+     *
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    public byte[] wrapKey(Key key) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.WRAP_MODE, this.keyPair.getPrivate());
+        byte[] wrappedKey = cipher.wrap(key);
+        return wrappedKey;
+    }
+
+    /**
+     * 解密秘钥
+     *
+     * @param wrapedKeyBytes
+     * @return
+     * @throws Exception
+     */
+    public Key unwrapKey(byte[] wrapedKeyBytes) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.UNWRAP_MODE, this.keyPair.getPublic());
+        Key key = cipher.unwrap(wrapedKeyBytes, "AES", Cipher.SECRET_KEY);
+        return key;
+    }
+
 }
 

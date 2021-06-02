@@ -12,7 +12,7 @@ public class PageUtil {
      *
      * @param list     切割数据集合
      * @param pageSize 每页记录数
-     * @param <T> 泛型集合
+     * @param <T>      泛型集合
      * @return 泛型子集
      */
     public static <T> List<List<T>> splitList(List<T> list, int pageSize) {

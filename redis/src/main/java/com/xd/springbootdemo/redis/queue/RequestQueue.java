@@ -34,7 +34,8 @@ public class RequestQueue {
     /**
      * 构造私有
      */
-    private RequestQueue() {}
+    private RequestQueue() {
+    }
 
     /**
      * 静态内部类单例,线程安全,Jvm保证内部类的初始化只会发生一次

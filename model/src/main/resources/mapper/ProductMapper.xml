@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xd.springbootdemo.mapper.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.xd.springbootdemo.domain.Product">
+        <!--@mbg.generated-->
+        <!--@Table product-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="total_quota" jdbcType="DECIMAL" property="totalQuota"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, total_quota
+    </sql>
+
+
+</mapper>

@@ -34,6 +34,7 @@ public abstract class AbstractTaskProcessor {
         }
     }
 
-    public void after(TaskRequest request, Future<TaskResponse> future) {}
+    public void after(TaskRequest request, Future<TaskResponse> future) {
+    }
 
 }
