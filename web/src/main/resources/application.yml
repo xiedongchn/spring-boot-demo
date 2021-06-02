@@ -1,0 +1,66 @@
+server:
+  port: 6100
+  servlet:
+    # 应用访问路径
+    context-path: /
+    tomcat:
+      uri-encoding: UTF-8
+      threads:
+        max: 800
+        min-spare: 10
+
+# 日志配置
+logging:
+  level:
+    com.xd.springboot: debug
+    org.springframework: warn
+
+spring:
+  profiles:
+    active: local, redis-single
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    druid:
+      connectionProperties: config.decrypt=false
+      # 使用druid数据源
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+  redis:
+    pool:
+      maxTotal: 120 # 最大连接数
+      maxIdle: 30 # 最大空闲实例的个数
+      minIdle: 3 #最小空闲实例个数
+      numTestsPerEvictionRun: 1024 # 每个逐出器运行期间要检查的最大对象数
+      timeBetweenEvictionRunsMillis: 30000 # 释放扫描的扫描间隔
+      minEvictableIdleTimeMillis: 1800000 # 连接的最小空闲时间
+      softMinEvictableIdleTimeMillis: 10000 # 连接控歘按时间多久后释放，当空闲时间>该值且空闲连接>最大空闲连接数时直接释放
+      maxWaitMillis: 1500 # 获得链接时的最大等待毫秒数，小于0：阻塞不确定时间，默认-1
+      testOnBorrow: true # 在获得链接的时候检查有效性，默认false
+      testWhileIdle: true # 在空闲时检查有效性，默认false
+      blockWhenExhausted: false # 连接耗尽时是否阻塞，false报异常，true阻塞超时,默认true
+
+dubbo:
+  application:
+    name: spring-boot-demo-dubbo-consumer
+  registry:
+    protocol: zookeeper
+    address: 127.0.0.1:2181
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.xd.springboot.mapper
+  configuration:
+    #如果数据库中的命名是xx_xx ，pojo中的对象是xxXx，此时注解的方式就是映射不上，解决如下
+    map-underscore-to-camel-case: true

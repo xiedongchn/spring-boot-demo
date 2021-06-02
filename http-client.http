@@ -84,3 +84,6 @@ GET http://172.30.60.128:8598/status.jsp
 GET http://172.30.60.128:8605/status.jsp
 ### report
 GET http://172.30.60.128:8633/status.jsp
+
+###
+POST http://127.0.0.1:6100/user/queryUserList

@@ -1,0 +1,9 @@
+spring:
+  redis:
+    #redis的模式，1：单机，2：sentinel，3：cluster
+    model: 1
+    host: 10.211.55.5
+    port: 6379
+    password: 123456
+    ssl: false
+    timeout: 60000

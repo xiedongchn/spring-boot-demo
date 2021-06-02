@@ -1,0 +1,7 @@
+redis:
+  password: 123456
+  ssl: false
+  timeout: 60000
+    sentinel:
+      master:
+      nodes:
