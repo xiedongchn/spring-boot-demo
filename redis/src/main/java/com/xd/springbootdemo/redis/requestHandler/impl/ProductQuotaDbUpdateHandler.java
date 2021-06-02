@@ -16,6 +16,6 @@ public class ProductQuotaDbUpdateHandler implements IRequestHandler<ProductQuota
 
     @Override
     public boolean isForceRefresh() {
-        return false;
+        return true;
     }
 }

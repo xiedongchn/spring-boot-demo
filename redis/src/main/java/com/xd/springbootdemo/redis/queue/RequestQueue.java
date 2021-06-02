@@ -1,5 +1,6 @@
 package com.xd.springbootdemo.redis.queue;
 
+import com.xd.springbootdemo.redis.request.AbstractRequest;
 import com.xd.springbootdemo.redis.requestHandler.IRequestHandler;
 
 import java.util.ArrayList;
@@ -19,14 +20,14 @@ public class RequestQueue {
     /**
      * 队列集合
      */
-    private final List<ArrayBlockingQueue<IRequestHandler>> queues = new ArrayList<>();
+    private final List<ArrayBlockingQueue<IRequestHandler<AbstractRequest>>> queues = new ArrayList<>();
 
     /**
      * 标志位map
      */
-    public Map<Integer, Boolean> flagMap = new ConcurrentHashMap<>();
+    private final Map<Long, Boolean> flagMap = new ConcurrentHashMap<>();
 
-    private static RequestQueue getInstance() {
+    public static RequestQueue getInstance() {
         return Singleton.getInstance();
     }
 
@@ -51,7 +52,7 @@ public class RequestQueue {
      *
      * @param queue 队列
      */
-    public void addQueue(ArrayBlockingQueue<IRequestHandler> queue) {
+    public void addQueue(ArrayBlockingQueue<IRequestHandler<AbstractRequest>> queue) {
         this.queues.add(queue);
     }
 
@@ -70,8 +71,15 @@ public class RequestQueue {
      * @param index 下标
      * @return ArrayBlockingQueue
      */
-    public ArrayBlockingQueue<IRequestHandler> getQueue(int index) {
+    public ArrayBlockingQueue<IRequestHandler<AbstractRequest>> getQueue(int index) {
         return queues.get(index);
     }
 
+    public List<ArrayBlockingQueue<IRequestHandler<AbstractRequest>>> getQueues() {
+        return queues;
+    }
+
+    public Map<Long, Boolean> getFlagMap() {
+        return flagMap;
+    }
 }

@@ -6,7 +6,17 @@ package com.xd.springbootdemo.redis.requestHandler;
  */
 public interface IRequestHandler<T> {
 
+    /**
+     * 请求处理
+     *
+     * @param t 请求
+     */
     void process(T t);
 
+    /**
+     * 是否强制刷新
+     *
+     * @return boolean
+     */
     boolean isForceRefresh();
 }

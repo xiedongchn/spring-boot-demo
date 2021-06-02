@@ -1,10 +1,13 @@
 package com.xd.springbootdemo.redis.thread;
 
+import com.xd.springbootdemo.redis.queue.RequestQueue;
 import com.xd.springbootdemo.redis.request.AbstractRequest;
-import com.xd.springbootdemo.redis.requestHandler.IRequestHandler;
+import com.xd.springbootdemo.redis.request.RequestManager;
+import com.xd.springbootdemo.redis.request.impl.ProductQuotaCacheUpdateRequest;
 import com.xd.springbootdemo.redis.request.impl.ProductQuotaDbUpdateRequest;
-import com.xd.springbootdemo.redis.requestHandler.impl.ProductQuotaDbUpdateHandler;
+import lombok.extern.log4j.Log4j2;
 
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 
@@ -14,6 +17,7 @@ import java.util.concurrent.Callable;
  * @author xd
  * Created on 2021/6/1
  */
+@Log4j2
 public class RequestProcessThread implements Callable<Integer> {
 
     private final ArrayBlockingQueue<AbstractRequest> queue;
@@ -28,13 +32,24 @@ public class RequestProcessThread implements Callable<Integer> {
             AbstractRequest request = queue.take();
             boolean forceRefresh = request.isForceRefresh();
 
-            IRequestHandler requestHandler;
-            if (request instanceof ProductQuotaDbUpdateRequest) {
-                requestHandler = new ProductQuotaDbUpdateHandler();
-            } else {
-                continue;
+            if (!forceRefresh) {
+                RequestQueue requestQueue = RequestQueue.getInstance();
+                Map<Long, Boolean> flagMap = requestQueue.getFlagMap();
+                if (request instanceof ProductQuotaDbUpdateRequest) {
+                    flagMap.put(((ProductQuotaDbUpdateRequest) request).getProductId(), true);
+                } else if(request instanceof ProductQuotaCacheUpdateRequest) {
+                    Boolean flag = flagMap.get(((ProductQuotaCacheUpdateRequest) request).getProductId());
+                    if (flag == null || flag) {
+                        flagMap.put(((ProductQuotaCacheUpdateRequest) request).getProductId(), false);
+                    }
+
+                    if (flag != null && !flag) {
+                        return 1;
+                    }
+                }
             }
-            requestHandler.process(request);
+
+            RequestManager.handle(request);
         }
     }
 }
