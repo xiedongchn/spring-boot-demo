@@ -2,6 +2,7 @@ package com.xd.algorithm.leetcode;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -217,6 +218,109 @@ public class SolutionTest {
         head.next.next.next.next.next.next = new ListNode();
         head.next.next.next.next.next.next.next = cycle;
         System.out.println(detectCycle(head));
+    }
+
+    /**
+     * 给你一个有序数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。
+     *
+     * @param nums 数组，可为null
+     * @return int
+     */
+    public int removeDuplicates1(int[] nums) {
+        if (nums == null || nums.length <= 0) {
+            return 0;
+        }
+        int length = 1;
+        for (int i = 1; i < nums.length; i++) {
+            while (nums[i] == nums[length - 1]) {
+                i++;
+                if (i >= nums.length) {
+                    return length;
+                }
+            }
+            nums[length] = nums[i];
+            length++;
+        }
+        return length;
+    }
+
+    public int removeDuplicates2(int[] nums) {
+        if (nums == null || nums.length <= 0) {
+            return 0;
+        }
+        int length = 1;
+        Set<Integer> set = new HashSet<>();
+        set.add(nums[0]);
+        for (int i = 1; i < nums.length; i++) {
+            if (!set.contains(nums[i])) {
+                set.add(nums[i]);
+                nums[length] = nums[i];
+                length++;
+            }
+        }
+        return length;
+    }
+
+    public int removeDuplicates3(int[] nums) {
+        if (nums == null) {
+            return 0;
+        } else if (nums.length < 2) {
+            return nums.length;
+        }
+        int length = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[length] != nums[i]) {
+                nums[++length] = nums[i];
+            }
+        }
+        return ++length;
+    }
+
+    @Test
+    public void testRemoveDuplicates() {
+        int[] nums = new int[]{0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
+        System.out.println(removeDuplicates3(nums) + ":" + Arrays.toString(nums));
+        nums = null;
+        System.out.println(removeDuplicates3(nums) + ":" + Arrays.toString(nums));
+        nums = new int[]{0, 2};
+        System.out.println(removeDuplicates3(nums) + ":" + Arrays.toString(nums));
+        nums = new int[]{0, 1, 1, 1, 1};
+        System.out.println(removeDuplicates3(nums) + ":" + Arrays.toString(nums));
+        nums = new int[]{1, 1};
+        System.out.println(removeDuplicates3(nums) + ":" + Arrays.toString(nums));
+    }
+
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length < 2) {
+            return 0;
+        }
+        int sum = 0;
+        // 标记买入的位置,为-1时代表没买入,大于1时代表已买入,且值就是买入的下标
+        int buyIndex = -1;
+        // 限制最大能达到的下标,因为买入或者卖出都是要和下一天比较的,避免下标越界
+        int maxIndex = prices.length - 1;
+        // 这里从下标0开始遍历,依次和下一个数相比较,小于买入,大于卖出
+        for (int i = 0; i < prices.length; i++) {
+            // 卖出的两种情况,首先满足买入条件(buyIndex != -1):
+            // 1.当天价格大于下一天
+            // 2.已经到最后一天
+            if (buyIndex != -1 && (i < maxIndex && prices[i] > prices[i + 1] || i == maxIndex)) {
+                buyIndex = -1;
+                sum += prices[i];
+            } else if (buyIndex == -1 && i < maxIndex && prices[i] < prices[i + 1]) {
+                buyIndex = i;
+                sum -= prices[buyIndex];
+            }
+        }
+        return sum;
+    }
+
+    @Test
+    public void testMaxProfit() {
+        int[] array = new int[]{7, 1, 5, 3, 6, 4};
+        System.out.println(maxProfit(array));
+        array = new int[]{1, 2, 3, 4, 5};
+        System.out.println(maxProfit(array));
     }
 
     /**
