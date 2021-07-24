@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.xd</groupId>
+        <artifactId>product</artifactId>
+        <version>1.0</version>
+    </parent>
+    <artifactId>product-redis</artifactId>
+    <version>1.0</version>
+    <name>product-redis</name>
+    <description>Redis demo project</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xd</groupId>
+            <artifactId>product-service</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!--spring data redis使用的是jedis-->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>-->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>${redisson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
