@@ -49,14 +49,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public UserDO getUser(@PathVariable Long id) {
+    public UserDO getUser(@PathVariable("id") Long id) {
         // 处理"/users/{id}"的GET请求，用来获取url中id值的User信息
         // url中的id可通过@PathVariable绑定到函数的参数中
         return userMap.get(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public String putUser(@PathVariable Long id, @ModelAttribute UserDO userDO) {
+    public String putUser(@PathVariable("id") Long id, @ModelAttribute UserDO userDO) {
         // 处理"/users/{id}"的PUT请求，用来更新User信息
         UserDO u = userMap.get(id);
         u.setName(userDO.getName());
@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public String deleteUser(@PathVariable Long id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         // 处理"/users/{id}"的DELETE请求，用来删除User
         userMap.remove(id);
         return "success";

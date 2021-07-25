@@ -3,7 +3,6 @@ package com.xd.springboot.product.config;
 import com.xd.springboot.product.domain.UserDO;
 import com.xd.springboot.product.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -17,7 +16,7 @@ import java.util.Set;
 /**
  * @author xd
  */
-@Configuration
+//@Configuration
 public class WebFluxConfiguration {
 
     @Autowired

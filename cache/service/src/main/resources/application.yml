@@ -1,1 +1,57 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /cache
 
+spring:
+  application:
+    name: cache
+  # jackson时间格式化
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: always
+  profiles:
+    active:
+
+# 日志配置
+logging:
+  #  level:
+  #    root: info
+  config: classpath:logback.xml
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 10
+
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      circuitBreaker:
+        enabled: true
+        errorThresholdPercentage: 50  # 超过50%的失败请求，则熔断开关开启
+        forceClosed: false   # 强制开启熔断开关
+        forceOpen: false   # 强制关闭熔断开关
+        requestVolumeThreshold: 5  熔断的前提条件（请求的数量），在一定的时间窗口内，请求达到5个以后，才开始进行熔断判断
+        sleepWindowInMilliseconds: 15000   # 当熔断开启以后，经过多少秒再进入半开状态
+      execution:
+        isolation:
+          thread:
+            interruptOnFutureCancel: true  #取消的时候终止线程
+            interruptOnTimeout: true  #超时以后终止线程
+            timeoutInMilliseconds: 4000  #超时时间
+        timeout:
+          enabled: true
+      fallback:
+        enabled: true
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 20000  # 配置时间窗口

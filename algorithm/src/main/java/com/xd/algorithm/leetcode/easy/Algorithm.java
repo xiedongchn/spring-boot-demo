@@ -1,8 +1,10 @@
-package com.xd.springboot.product.test;
+package com.xd.algorithm.leetcode.easy;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author xd

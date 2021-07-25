@@ -1,18 +1,27 @@
 package com.xd.algorithm.leetcode;
 
-import lombok.EqualsAndHashCode;
-
 /**
  * 链表节点
  *
  * @author xd
  */
-@EqualsAndHashCode
 public class ListNode {
 
-    public int num;
+    public int val;
 
     public ListNode next;
+
+    public ListNode() {
+    }
+
+    public ListNode(int val) {
+        this.val = val;
+    }
+
+    public ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
 
     /**
      * 根据传入的size构造相应个数的链表
@@ -22,12 +31,12 @@ public class ListNode {
      */
     public static ListNode getListNode(int size) {
         ListNode head = new ListNode();
-        head.num = 1;
+        head.val = 1;
         ListNode cur = head;
         for (int i = 2; i <= size; i++) {
             cur.next = new ListNode();
             cur = cur.next;
-            cur.num = i;
+            cur.val = i;
         }
         return head;
     }
@@ -38,10 +47,14 @@ public class ListNode {
      * @param head 链表头节点
      */
     public static void printListNode(ListNode head) {
-        StringBuilder numStr = new StringBuilder().append(head.num);
+        if (head == null) {
+            System.out.println("null");
+            return;
+        }
+        StringBuilder numStr = new StringBuilder().append(head.val);
         ListNode cur = head;
         while (cur.next != null) {
-            numStr.append(",").append(cur.next.num);
+            numStr.append(",").append(cur.next.val);
             cur = cur.next;
         }
         System.out.println(numStr);

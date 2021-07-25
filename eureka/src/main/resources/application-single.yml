@@ -1,0 +1,21 @@
+#单机配置
+server:
+  port: 7000
+
+eureka:
+  instance:
+    hostname: eureka-single
+    lease-renewal-interval-in-seconds: 10 #服务续租间隔时间
+  server:
+    enable-self-preservation: false #开发环境关闭自我保护机制，利于调试
+    eviction-interval-timer-in-ms: 5000 #剔除下线的服务时间间隔，默认60s
+  client:
+    helthcheck: true
+    #表示是否将自己注册到 Eureka Server，默认为 true。
+    register-with-eureka: false
+    #表示是否从 Eureka Server 获取注册信息，默认为 true。
+    fetch-registry: true
+    service-url:
+      #设置与 Eureka Server 交互的地址，查询服务和注册服务都需要依赖这个地址。
+      #默认是 http://localhost:8761/eureka ；多个地址可使用英文逗号（,）分隔。
+      defaultZone: http://localhost:7000/eureka/

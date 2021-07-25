@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: eureka
+  profiles:
+    active: single
+
+# 日志配置
+logging:
+  config: classpath:logback.xml

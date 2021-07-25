@@ -1,5 +1,5 @@
 server:
-  port: 6100
+  port: 8002
   servlet:
     # 应用访问路径
     context-path: /product
@@ -13,9 +13,11 @@ server:
 logging:
   level:
     com.xd.springboot: debug
-    org.springframework: warn
+    org.springframework: info
 
 spring:
+  application:
+    name: product
   profiles:
     active: local, redis-single
   main:
@@ -66,7 +68,11 @@ dubbo:
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: com.xd.springboot.mapper
+  type-aliases-package: com.xd.springboot.product.mapper
   configuration:
     #如果数据库中的命名是xx_xx ，pojo中的对象是xxXx，此时注解的方式就是映射不上，解决如下
     map-underscore-to-camel-case: true
+
+feign:
+  hystrix:
+    enabled: true
