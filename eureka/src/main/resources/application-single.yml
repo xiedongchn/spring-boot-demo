@@ -6,6 +6,12 @@ eureka:
   instance:
     hostname: eureka-single
     lease-renewal-interval-in-seconds: 10 #服务续租间隔时间
+    #home-page-url-path: ${server.servlet.context-path}
+    #health-check-url-path: ${server.servlet.context-path}/actuator/health
+    #status-page-url-path: ${server.servlet.context-path}/actuator/info
+    metadata-map:
+      management:
+        context-path: ${server.servlet.context-path}/actuator
   server:
     enable-self-preservation: false #开发环境关闭自我保护机制，利于调试
     eviction-interval-timer-in-ms: 5000 #剔除下线的服务时间间隔，默认60s

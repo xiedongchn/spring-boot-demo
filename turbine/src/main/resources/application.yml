@@ -1,0 +1,40 @@
+server:
+  port: 7001
+  servlet:
+    context-path: /turbine
+    # hystrix dashboard访问地址是http://{ip}:{host}/turbine/hystrix
+
+spring:
+  application:
+    name: turbine
+  profiles:
+    active:
+
+# 日志配置
+logging:
+  #  level:
+  #    root: info
+  config: classpath:logback.xml
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 10
+
+turbine:
+  aggregator:
+    clusterConfig: default   # 指定聚合哪些集群，多个使用","分割，默认为default。可使用http://.../turbine.stream?cluster={clusterConfig之一}访问
+  appConfig: product, cache, cls-credit  # 配置Eureka中的serviceId列表，表明监控哪些服务
+  instanceUrlSuffix: hystrix.stream
+  clusterNameExpression: new String("default")
+  # 1. clusterNameExpression指定集群名称，默认表达式appName；此时：turbine.aggregator.clusterConfig需要配置想要监控的应用名称
+  # 2. 当clusterNameExpression: default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default
+  # 3. 当clusterNameExpression: metadata['cluster']时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster: ABC，则需要配置，同时turbine.aggregator.clusterConfig: ABC
+
+hystrix:
+  dashboard:
+    # 解决：Origin parameter: https://localhost:7001/turbine.stream is not in the allowed list of proxy host names.  If it should be allowed add it to hystrix.dashboard.proxyStreamAllowList.
+    proxy-stream-allow-list: "localhost"

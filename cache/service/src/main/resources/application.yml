@@ -16,8 +16,8 @@ spring:
 
 # 日志配置
 logging:
-  #  level:
-  #    root: info
+  level:
+    root: debug
   config: classpath:logback.xml
 
 eureka:
@@ -55,3 +55,23 @@ hystrix:
       metrics:
         rollingStats:
           timeInMilliseconds: 20000  # 配置时间窗口
+
+management:
+  #security:
+  #  enabled: false
+  endpoints:
+    web:
+      #
+      base-path: /
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    #启用https
+    #ssl:
+    #  enabled: true
+  server:
+    servlet:
+      context-path: /

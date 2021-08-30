@@ -1,4 +1,4 @@
-package com.xd.springboot.cache.controller;
+package com.xd.springboot.turbine.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
@@ -39,6 +39,7 @@ public class CreditProductCacheController {
             })
     @RequestMapping(value = "/getProductInfo/{id}", method = RequestMethod.GET)
     public ProductInfoVO getProductInfo(@PathVariable("id") Long id) {
+        System.out.println("adsfsadfsdf");
         return productClient.getProductInfo(id);
     }
 

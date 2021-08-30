@@ -1,4 +1,4 @@
-package com.xd.springboot.cache.controller;
+package com.xd.springboot.turbine.controller;
 
 import com.netflix.hystrix.HystrixThreadPoolMetrics;
 import org.springframework.web.bind.annotation.*;
