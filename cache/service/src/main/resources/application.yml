@@ -32,29 +32,88 @@ feign:
   hystrix:
     enabled: true
 
+# ribbon全局配置
+# https://blog.csdn.net/east123321/article/details/82385816
+ribbon:
+  http:
+    client:
+      enable: true
+  ConnectTimeout: 3000
+  ReadTimeout: 3000
+  MaxAutoRetries: 1 #同一台实例最大重试次数,不包括首次调用
+  MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次调用
+  OkToRetryOnAllOperations: false  #是否所有操作都重试,默认情况下,GET方式请求无论是连接异常还是读取异常,都会进行重试,非GET方式请求,只有连接异常时,才会进行重试
+  #ribbon 中，请求最多会被执行次数 = 1 + maxAutoRetries + (maxAutoRetries + 1) * MaxAutoRetriesNextServer = (1 + maxAutoRetries ) * (1 + MaxAutoRetriesNextServer) 次
+  #一般来说，会设置 ribbon 的超时时间 < hystrix， 这是因为 ribbon 有重试机制。(这里说的 ribbon 超时时间是包括重试在内的，即，最好要让 ribbon 的重试全部执行，直到 ribbon 超时被触发)。
+  #由于 connectionTime 一般比较短，可以忽略。那么，设置的超时时间应该满足：
+  #(1 + MaxAutoRetries) * (1 + MaxAutoRetriesNextServer) ReadTimeOut < hystrix 的 timeoutInMilliseconds
+
+#https://blog.csdn.net/weixin_40663800/article/details/83003727
+#实例配置：只需要将全局配置中的default换成与之对应的key即可
 hystrix:
   command:
+    #HystrixComandKey对应@HystrixCommand中的commandKey属性
+    HystrixComandKey: #将default换成HystrixComrnandKey
+      execution:
+        isolation:
+          strategy: THREAD
+  collapser:
+    #HystrixCollapserKey对应@HystrixCollapser注解中的collapserKey属性
+    HystrixCollapserKey: #将default换成HystrixCollapserKey
+      maxRequestsInBatch: 100
+  threadpool:
+    #HystrixThreadPoolKey对应@HystrixCommand中的threadPoolKey属性
+    HystrixThreadPoolKey: #将default换成HystrixThreadPoolKey
+      coreSize: 10
+
+hystrix:
+  #用于控制HystrixCommand的行为
+  command:
+    #全局配置
     default:
+      requestCache:
+        #用于控制是否开启请求缓存
+        enabled: true
+      #用于控制HystrixCircuitBreaker的行为
       circuitBreaker:
+        #用于控制断路器是否跟踪健康状况以及熔断请求
         enabled: true
         errorThresholdPercentage: 50  # 超过50%的失败请求，则熔断开关开启
         forceClosed: false   # 强制开启熔断开关
         forceOpen: false   # 强制关闭熔断开关
-        requestVolumeThreshold: 5  熔断的前提条件（请求的数量），在一定的时间窗口内，请求达到5个以后，才开始进行熔断判断
+        requestVolumeThreshold: 5  #熔断的前提条件（请求的数量），在一定的时间窗口内，请求达到5个以后，才开始进行熔断判断
         sleepWindowInMilliseconds: 15000   # 当熔断开启以后，经过多少秒再进入半开状态
       execution:
         isolation:
+          #控制HystrixCommand的隔离策略，THREAD->线程池隔离策略(默认)，SEMAPHORE->信号量隔离策略
+          strategy: THREAD
           thread:
-            interruptOnFutureCancel: true  #取消的时候终止线程
-            interruptOnTimeout: true  #超时以后终止线程
-            timeoutInMilliseconds: 4000  #超时时间
+            #取消的时候终止线程
+            interruptOnFutureCancel: true
+            #配置HystrixCommand执行超时的时候是否要中断
+            interruptOnTimeout: true
+            #配置HystrixCommand执行被取消的时候是否要中断
+            interruptOnCancel: true
+            #配置HystrixCommand执行的超时时间，执行超过该时间会进行服务降级处理
+            timeoutInMilliseconds: 1000
         timeout:
+          #配置HystrixCommand的执行是否启用超时时间
           enabled: true
+        #当使用信号量隔离策略时，用来控制并发量的大小，超过该并发量的请求会被拒绝
+        semaphore:
+          maxConcurrentRequests: 10
+      #用于控制是否启用服务降级
       fallback:
         enabled: true
       metrics:
         rollingStats:
           timeInMilliseconds: 20000  # 配置时间窗口
+  threadpool: #用于控制HystrixCommand执行所在线程池的行为
+    default:
+      coreSize: 10 #线程池的核心线程数
+      maximumSize: 10 #线程池的最大线程数，超过该线程数的请求会被拒绝
+      maxQueueSize: -1 #用于设置线程池的最大队列大小，-1采用SynchronousQueue，其他正数采用LinkedBlockingQueue
+      queueSizeRejectionThreshold: 5 #用于设置线程池队列的拒绝阀值，由于LinkedBlockingQueue不能动态改版大小，使用时需要用该参数来控制线程数
 
 management:
   #security:
