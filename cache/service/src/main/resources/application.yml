@@ -2,6 +2,12 @@ server:
   port: 8001
   servlet:
     context-path: /cache
+  # 对客户端浏览器的请求以及 Consumer 对 Provider 的请求与响应都实现 Gzip 压缩
+  compression:
+    # 是否开启压缩
+    enabled: false
+    # 配置压缩支持的 MIME TYPE
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
 
 spring:
   application:
@@ -28,48 +34,18 @@ eureka:
   instance:
     lease-renewal-interval-in-seconds: 10
 
-feign:
-  hystrix:
-    enabled: true
-
-# ribbon全局配置
-# https://blog.csdn.net/east123321/article/details/82385816
-ribbon:
-  http:
-    client:
-      enable: true
-  ConnectTimeout: 3000
-  ReadTimeout: 3000
-  MaxAutoRetries: 1 #同一台实例最大重试次数,不包括首次调用
-  MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次调用
-  OkToRetryOnAllOperations: false  #是否所有操作都重试,默认情况下,GET方式请求无论是连接异常还是读取异常,都会进行重试,非GET方式请求,只有连接异常时,才会进行重试
-  #ribbon 中，请求最多会被执行次数 = 1 + maxAutoRetries + (maxAutoRetries + 1) * MaxAutoRetriesNextServer = (1 + maxAutoRetries ) * (1 + MaxAutoRetriesNextServer) 次
-  #一般来说，会设置 ribbon 的超时时间 < hystrix， 这是因为 ribbon 有重试机制。(这里说的 ribbon 超时时间是包括重试在内的，即，最好要让 ribbon 的重试全部执行，直到 ribbon 超时被触发)。
-  #由于 connectionTime 一般比较短，可以忽略。那么，设置的超时时间应该满足：
-  #(1 + MaxAutoRetries) * (1 + MaxAutoRetriesNextServer) ReadTimeOut < hystrix 的 timeoutInMilliseconds
-
-#https://blog.csdn.net/weixin_40663800/article/details/83003727
-#实例配置：只需要将全局配置中的default换成与之对应的key即可
+# 详解Feign、ribbon、Hystrix：https://www.cnblogs.com/east7/p/15858644.html
 hystrix:
-  command:
-    #HystrixComandKey对应@HystrixCommand中的commandKey属性
-    HystrixComandKey: #将default换成HystrixComrnandKey
-      execution:
-        isolation:
-          strategy: THREAD
-  collapser:
-    #HystrixCollapserKey对应@HystrixCollapser注解中的collapserKey属性
-    HystrixCollapserKey: #将default换成HystrixCollapserKey
-      maxRequestsInBatch: 100
-  threadpool:
-    #HystrixThreadPoolKey对应@HystrixCommand中的threadPoolKey属性
-    HystrixThreadPoolKey: #将default换成HystrixThreadPoolKey
-      coreSize: 10
-
-hystrix:
+  threadpool: #用于控制HystrixCommand执行所在线程池的行为
+    default:
+      coreSize: 10 #线程池的核心线程数
+      maximumSize: 10 #线程池的最大线程数，超过该线程数的请求会被拒绝
+      maxQueueSize: -1 #用于设置线程池的最大队列大小，-1采用SynchronousQueue，其他正数采用LinkedBlockingQueue
+      queueSizeRejectionThreshold: 5 #用于设置线程池队列的拒绝阀值，由于LinkedBlockingQueue不能动态改版大小，使用时需要用该参数来控制线程数
   #用于控制HystrixCommand的行为
   command:
-    #全局配置
+    #default全局有效，service id指定应用有效，甚至可以具体到方法例如："OtherFeignClient#getUserById(String)"
+    #如果用@HystrixCommand注解，这里可以写注解的commandKey值
     default:
       requestCache:
         #用于控制是否开启请求缓存
@@ -94,10 +70,11 @@ hystrix:
             interruptOnTimeout: true
             #配置HystrixCommand执行被取消的时候是否要中断
             interruptOnCancel: true
-            #配置HystrixCommand执行的超时时间，执行超过该时间会进行服务降级处理
+            #配置HystrixCommand执行的超时时间，执行超过该时间会进行服务降级处理，默认1000ms
             timeoutInMilliseconds: 1000
         timeout:
           #配置HystrixCommand的执行是否启用超时时间
+          #如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
           enabled: true
         #当使用信号量隔离策略时，用来控制并发量的大小，超过该并发量的请求会被拒绝
         semaphore:
@@ -108,12 +85,79 @@ hystrix:
       metrics:
         rollingStats:
           timeInMilliseconds: 20000  # 配置时间窗口
-  threadpool: #用于控制HystrixCommand执行所在线程池的行为
-    default:
-      coreSize: 10 #线程池的核心线程数
-      maximumSize: 10 #线程池的最大线程数，超过该线程数的请求会被拒绝
-      maxQueueSize: -1 #用于设置线程池的最大队列大小，-1采用SynchronousQueue，其他正数采用LinkedBlockingQueue
-      queueSizeRejectionThreshold: 5 #用于设置线程池队列的拒绝阀值，由于LinkedBlockingQueue不能动态改版大小，使用时需要用该参数来控制线程数
+
+#https://blog.csdn.net/weixin_40663800/article/details/83003727
+#hystrix实例配置：只需要将全局配置中的default换成与之对应的key即可
+hystrix:
+  command:
+    #HystrixComandKey对应@HystrixCommand中的commandKey属性
+    HystrixComandKey: #将default换成HystrixComrnandKey
+      execution:
+        isolation:
+          strategy: THREAD
+  collapser:
+    #HystrixCollapserKey对应@HystrixCollapser注解中的collapserKey属性
+    HystrixCollapserKey: #将default换成HystrixCollapserKey
+      maxRequestsInBatch: 100
+  threadpool:
+    #HystrixThreadPoolKey对应@HystrixCommand中的threadPoolKey属性
+    HystrixThreadPoolKey: #将default换成HystrixThreadPoolKey
+      coreSize: 10
+
+# ribbon全局配置
+# https://blog.csdn.net/east123321/article/details/82385816
+ribbon:
+  http:
+    client:
+      enable: true
+  ConnectTimeout: 3000
+  ReadTimeout: 3000
+  MaxAutoRetries: 1 #同一台实例最大重试次数,不包括首次调用
+  MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次调用
+  OkToRetryOnAllOperations: false  #是否所有操作都重试,默认情况下,GET方式请求无论是连接异常还是读取异常,都会进行重试,非GET方式请求,只有连接异常时,才会进行重试
+  #ribbon 中，请求最多会被执行次数 = 1 + maxAutoRetries + (maxAutoRetries + 1) * MaxAutoRetriesNextServer = (1 + maxAutoRetries ) * (1 + MaxAutoRetriesNextServer) 次
+  #一般来说，会设置 ribbon 的超时时间 < hystrix， 这是因为 ribbon 有重试机制。(这里说的 ribbon 超时时间是包括重试在内的，即，最好要让 ribbon 的重试全部执行，直到 ribbon 超时被触发)。
+  #由于 connectionTime 一般比较短，可以忽略。那么，设置的超时时间应该满足：
+  #(1 + MaxAutoRetries) * (1 + MaxAutoRetriesNextServer) ReadTimeOut < hystrix 的 timeoutInMilliseconds
+
+# ribbon实例配置，针对具体某一个服务，而不是某个接口
+# 当实例配置和全局配置都存在，具体的取值逻辑参照这个方法org.springframework.cloud.openfeign.ribbon.FeignLoadBalancer.execute
+zjj-funder: # 对应FeignClient注解的name/value属性
+  ribbon:
+    http:
+      client:
+        enable: true
+    ConnectTimeout: 5000
+    ReadTimeout: 5000
+    MaxAutoRetries: 1
+    MaxAutoRetriesNextServer: 1
+    OkToRetryOnAllOperations: true
+
+# 如果已存在feign配置，则会忽略ribbon配置，可针对具体某个接口进行配置
+# https://www.cnblogs.com/east7/p/15858644.html
+feign:
+  # 启用Hystrix
+  hystrix:
+    enabled: true
+  client:
+    config:
+      # feign全局配置，优先级高于ribbon，最好不要配置，交给ribbon
+      default:  # 所有服务级别设置，default为任意服务，如果配置了ribbon，则最好不要使用feign的default配置
+        connectTimeout: # 毫秒时间，建立连接的超时时间，一般只在发现服务时用到
+        readTimeout: # 毫秒时间 ，接口请求的超时时间
+      FunderClient: # 对应FeignClient注解的contextId属性，配置指定服务时的超时时间，更细粒度的配置
+        connectTimeout: 200
+        readTimeout: 5000
+        # 如果存在指定服务的配置，则ribbon的配置会被忽略，需要重新配置重试策略，否则默认不重试
+        retryer: com.msph.cls.credit.webapp.config.FeignRetryer
+  # 请求压缩
+  compression:
+    request:
+      mime-types: text/xml,application/xml,application/json # 配置压缩支持的 MIME TYPE
+      min-request-size: 512                                 # 配置压缩数据大小的最小阈值，默认 2048
+      enabled: true                                         # 请求是否开启 gzip 压缩
+    response:
+      enabled: true                                         # 响应是否开启 gzip 压缩
 
 management:
   #security:
